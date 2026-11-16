@@ -71,4 +71,7 @@
   --ease-whip: cubic-bezier(0.7, 0, 0.84, 0);
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --nav-h: 76px;
+
+  /* Breathing room: every multi-line display heading uses this — lines must never touch */
+  --lh-display: 1.08;
 }

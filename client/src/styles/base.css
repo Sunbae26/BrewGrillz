@@ -39,7 +39,7 @@ ul { list-style: none; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
 /* ---------- Type utilities ---------- */
-.display { font-family: var(--f-display); text-transform: uppercase; line-height: 0.88; letter-spacing: 0.005em; font-weight: 400; }
+.display { font-family: var(--f-display); text-transform: uppercase; line-height: var(--lh-display); letter-spacing: 0.005em; font-weight: 400; }
 .western { font-family: var(--f-western); font-weight: 400; }
 .script { font-family: var(--f-script); font-weight: 400; }
 .outline { color: transparent; -webkit-text-stroke: 1.5px var(--cream); }

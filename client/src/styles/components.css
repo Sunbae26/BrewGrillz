@@ -104,7 +104,7 @@
 
 .mnav { position: fixed; inset: 0; z-index: 79; background: var(--red); padding: calc(var(--nav-h) + 2rem) var(--gutter) 2rem; display: flex; flex-direction: column; justify-content: space-between; overflow-y: auto; }
 .mnav__links { display: grid; gap: 0.3rem; }
-.mnav__link { font-size: clamp(2.8rem, 12vw, 5rem); color: var(--ink); display: flex; align-items: flex-start; gap: 0.6rem; line-height: 1; }
+.mnav__link { font-size: clamp(2.8rem, 12vw, 5rem); color: var(--ink); display: flex; align-items: flex-start; gap: 0.6rem; line-height: var(--lh-display); }
 .mnav__link small { font: 800 0.75rem/1 var(--f-body); color: var(--cream); margin-top: 0.5rem; }
 .mnav__foot { display: grid; gap: 1rem; justify-items: start; margin-top: 2rem; }
 .mnav__foot .btn--primary { background: var(--ink); }
