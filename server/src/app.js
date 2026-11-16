@@ -6,6 +6,7 @@ import rateLimit from 'express-rate-limit'
 import { env, isProd } from './lib/env.js'
 import health from './routes/health.js'
 import newsletter from './routes/newsletter.js'
+import menu from './routes/menu.js'
 
 export function createApp() {
   const app = express()
@@ -25,7 +26,7 @@ export function createApp() {
 
   app.use('/api/health', health)
   app.use('/api/newsletter', formLimiter, newsletter)
-  // Sprint 2: app.use('/api/menu', menu)
+  app.use('/api/menu', menu)
   // Sprint 3: app.use('/api/orders', orders)
   // Sprint 4: app.use('/api/reservations', reservations); app.use('/api/contact', contact)
   // Sprint 5: app.use('/api/auth', auth); app.use('/api/loyalty', loyalty); app.use('/api/admin', admin)

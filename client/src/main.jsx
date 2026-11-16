@@ -11,6 +11,7 @@ import './styles/base.css'
 import './styles/components.css'
 import './styles/home.css'
 import './styles/pages.css'
+import './styles/menu.css'
 import App from './App'
 
 if ('scrollRestoration' in history) history.scrollRestoration = 'manual'

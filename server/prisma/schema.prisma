@@ -47,6 +47,7 @@ model MenuCategory {
   name      String
   type      MenuType   @default(FOOD)
   note      String?    // e.g. "served with salad and butter raisin rice"
+  section   String?    // drinks sub-heading, e.g. "Chilled bottled beers"
   sort      Int        @default(0)
   items     MenuItem[]
   createdAt DateTime   @default(now())
@@ -59,7 +60,10 @@ model MenuItem {
   description  String?
   priceCents   Int             // base price, GST inclusive
   image        String?
-  tags         String[]        // signature, chefs-pick, spicy, veg, sharing
+  info         String?         // short drinks line, e.g. "4.9% ABV · English-style golden"
+  section      String?         // drinks sub-heading the item sits under
+  options      Json?           // [{ name: "Doneness", choices: [...] }] — no price change
+  tags         String[]        // signature, chefs-choice, spicy, veg, sharing
   isAvailable  Boolean         @default(true) // "86" switch
   isOrderable  Boolean         @default(true) // false = dine-in only (e.g. alcohol, if required)
   sort         Int             @default(0)

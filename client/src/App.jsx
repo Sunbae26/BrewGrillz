@@ -6,10 +6,10 @@ import Footer from './components/Footer'
 import Cursor from './components/Cursor'
 import Home from './pages/Home'
 import Styleguide from './pages/Styleguide'
+import Menu from './pages/Menu'
 import Placeholder from './pages/Placeholder'
 
 const soon = [
-  { path: '/menu', title: 'The Menu', sprint: 2, blurb: 'Every steak, pizza, pasta and pint — with photos, filters and MoCo zoom. Firing up in Sprint 2.' },
   { path: '/order', title: 'Order Online', sprint: 3, blurb: 'Cart, checkout and secure online payment for pickup or delivery. Coming in Sprint 3.' },
   { path: '/reserve', title: 'Book a Table', sprint: 4, blurb: 'Pick a date, time and crew size. Until then, WhatsApp us on +65 8770 2077.' },
   { path: '/bar', title: 'The Bar', sprint: 4, blurb: 'Brewerkz taps, buckets, cocktails, wines and premium spirits — the full neon treatment.' },
@@ -29,6 +29,7 @@ function Shell() {
         <Routes location={location}>
           <Route path="/" element={<Home />} />
           <Route path="/styleguide" element={<Styleguide />} />
+          <Route path="/menu" element={<Menu />} />
           {soon.map((p) => (
             <Route key={p.path} path={p.path} element={<Placeholder {...p} />} />
           ))}

@@ -28,7 +28,14 @@ The site runs fine **without** a database. The newsletter form politely says "no
 ### Connect the database (when ready)
 1. Create a Neon project (region: Singapore) and copy the **pooled** and **direct** connection strings into `server/.env`
    as `DATABASE_URL` and `DIRECT_URL`.
-2. `cd server && npx prisma migrate dev --name init && npm run db:seed`
+2. `cd server && npx prisma migrate dev --name init && npm run db:seed`  (seeds settings + the full menu)
+
+### The menu
+- **One file:** `client/src/data/menu.json` (from the Jan 2026 dining menu). The Menu page, the database seed and the
+  `/api/menu` fallback all read it. Change a price there, then re-run `npm run db:seed`.
+- `GET /api/menu` returns the menu from the database (or from `menu.json` if no database is set yet).
+- Deep links: `/menu#grill`, `#pizza`, `#pasta`, `#burgers`, `#bites`, `#platters`, `#beer`, `#cocktails`, `#wine`…
+- Table QR codes: point them at `/menu?table=1` (view-only, no order buttons).
 
 ---
 
@@ -86,4 +93,5 @@ Everything respects **prefers-reduced-motion** and runs lighter on phones.
 ## Sprint status
 - ✅ Sprint 0 — repo, server, schema, deploy configs, design system, MoCo motion library, `/styleguide`
 - ✅ Sprint 1 — home page
-- ⏭ Sprint 2 — menu (DB-driven, from the Jan 2026 PDF)
+- ✅ Sprint 2 — menu page, menu data, seed + `/api/menu`, print menu, table-QR mode
+- ⏭ Sprint 3 — cart, checkout, Stripe payments, order notifications
