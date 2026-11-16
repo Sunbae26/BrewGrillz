@@ -1,0 +1,74 @@
+/* ============================================================
+   BREWGRILLZ — "NEON SALOON" DESIGN TOKENS
+   Brand: red + charcoal + white (from the logo)
+   Pops: amber (fire) + hop lime (neon bar)
+   ============================================================ */
+:root {
+  /* Brand */
+  --red: #da3833;
+  --red-hot: #ff4a3d;
+  --red-deep: #9e1f1b;
+  --char: #141110;        /* page background (deeper than logo charcoal) */
+  --char-2: #1d1918;      /* raised surfaces */
+  --char-3: #322d2b;      /* logo charcoal — cards, borders */
+  --char-4: #4a4340;
+  --cream: #f5efe6;
+  --paper: #efe4cf;       /* wanted-poster paper */
+  --ink: #1a1514;
+  --white: #ffffff;
+
+  /* Pops */
+  --amber: #ffb238;
+  --lime: #c6ff3d;
+
+  /* Text */
+  --text: var(--cream);
+  --text-dim: rgba(245, 239, 230, 0.66);
+  --text-faint: rgba(245, 239, 230, 0.38);
+  --line: rgba(245, 239, 230, 0.12);
+
+  /* Type */
+  --f-display: 'Anton', 'Impact', sans-serif;
+  --f-western: 'Rye', 'Georgia', serif;
+  --f-script: 'Permanent Marker', 'Comic Sans MS', cursive;
+  --f-body: 'Manrope Variable', 'Manrope', system-ui, sans-serif;
+
+  --fs-mega: clamp(4.2rem, 15.5vw, 15rem);
+  --fs-h1: clamp(3rem, 8vw, 7.5rem);
+  --fs-h2: clamp(2.4rem, 6vw, 5.4rem);
+  --fs-h3: clamp(1.6rem, 3vw, 2.6rem);
+  --fs-body: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
+  --fs-small: 0.875rem;
+  --fs-micro: 0.72rem;
+
+  /* Space */
+  --s-1: 0.25rem;
+  --s-2: 0.5rem;
+  --s-3: 0.75rem;
+  --s-4: 1rem;
+  --s-5: 1.5rem;
+  --s-6: 2rem;
+  --s-7: 3rem;
+  --s-8: 4.5rem;
+  --s-9: 7rem;
+  --section-y: clamp(5rem, 11vw, 10rem);
+  --gutter: clamp(1.1rem, 4vw, 3.5rem);
+  --max: 1440px;
+
+  /* Shape */
+  --r-1: 6px;
+  --r-2: 14px;
+  --r-3: 26px;
+  --r-pill: 999px;
+
+  /* Effects */
+  --glow-red: 0 0 12px rgba(218, 56, 51, 0.65), 0 0 42px rgba(218, 56, 51, 0.35);
+  --glow-lime: 0 0 10px rgba(198, 255, 61, 0.7), 0 0 36px rgba(198, 255, 61, 0.35);
+  --shadow-card: 0 30px 60px -20px rgba(0, 0, 0, 0.7);
+
+  /* Motion */
+  --ease-ramp: cubic-bezier(0.05, 0.85, 0.12, 1);   /* fast-in, long slow tail */
+  --ease-whip: cubic-bezier(0.7, 0, 0.84, 0);
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --nav-h: 76px;
+}

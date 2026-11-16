@@ -1,0 +1,283 @@
+// BrewGrillz — database schema (Sprint 0 stubs; filled out sprint by sprint)
+// Neon Postgres: DATABASE_URL = pooled connection, DIRECT_URL = direct (for migrations)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// ---------- People ----------
+enum Role {
+  CUSTOMER
+  STAFF
+  MANAGER
+  OWNER
+}
+
+model User {
+  id           String          @id @default(cuid())
+  email        String          @unique
+  phone        String?         @unique
+  name         String?
+  passwordHash String?
+  role         Role            @default(CUSTOMER)
+  birthday     DateTime?
+  marketingOk  Boolean         @default(false)
+  loyalty      LoyaltyAccount?
+  orders       Order[]
+  reservations Reservation[]
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+}
+
+// ---------- Menu (Sprint 2) ----------
+enum MenuType {
+  FOOD
+  DRINK
+}
+
+model MenuCategory {
+  id        String     @id @default(cuid())
+  slug      String     @unique
+  name      String
+  type      MenuType   @default(FOOD)
+  note      String?    // e.g. "served with salad and butter raisin rice"
+  sort      Int        @default(0)
+  items     MenuItem[]
+  createdAt DateTime   @default(now())
+}
+
+model MenuItem {
+  id           String          @id @default(cuid())
+  slug         String          @unique
+  name         String
+  description  String?
+  priceCents   Int             // base price, GST inclusive
+  image        String?
+  tags         String[]        // signature, chefs-pick, spicy, veg, sharing
+  isAvailable  Boolean         @default(true) // "86" switch
+  isOrderable  Boolean         @default(true) // false = dine-in only (e.g. alcohol, if required)
+  sort         Int             @default(0)
+  categoryId   String
+  category     MenuCategory    @relation(fields: [categoryId], references: [id])
+  variants     MenuVariant[]
+  modifiers    ModifierGroup[]
+  orderItems   OrderItem[]
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+}
+
+model MenuVariant {
+  id         String   @id @default(cuid())
+  name       String   // Half / Full, Glass / Bottle, Bottle / Bucket of 5
+  priceCents Int
+  sort       Int      @default(0)
+  itemId     String
+  item       MenuItem @relation(fields: [itemId], references: [id], onDelete: Cascade)
+}
+
+model ModifierGroup {
+  id        String     @id @default(cuid())
+  name      String     // "Doneness", "Sauce", "Choose 2 sides"
+  minSelect Int        @default(0)
+  maxSelect Int        @default(1)
+  items     MenuItem[]
+  options   Modifier[]
+}
+
+model Modifier {
+  id         String        @id @default(cuid())
+  name       String
+  priceCents Int           @default(0)
+  groupId    String
+  group      ModifierGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+}
+
+// ---------- Orders & payments (Sprint 3) ----------
+enum OrderStatus {
+  PENDING_PAYMENT
+  PAID
+  ACCEPTED
+  PREPARING
+  READY
+  OUT_FOR_DELIVERY
+  COMPLETED
+  CANCELLED
+  REFUNDED
+}
+
+enum Fulfilment {
+  PICKUP
+  DELIVERY
+}
+
+model Order {
+  id            String      @id @default(cuid())
+  number        Int         @unique @default(autoincrement())
+  status        OrderStatus @default(PENDING_PAYMENT)
+  fulfilment    Fulfilment  @default(PICKUP)
+  scheduledFor  DateTime?
+  customerName  String
+  customerEmail String
+  customerPhone String
+  address       String?
+  notes         String?
+  subtotalCents Int
+  deliveryCents Int         @default(0)
+  discountCents Int         @default(0)
+  totalCents    Int
+  promoCode     String?
+  pointsEarned  Int         @default(0)
+  pointsUsed    Int         @default(0)
+  userId        String?
+  user          User?       @relation(fields: [userId], references: [id])
+  items         OrderItem[]
+  payments      Payment[]
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@index([status, createdAt])
+}
+
+model OrderItem {
+  id         String   @id @default(cuid())
+  orderId    String
+  order      Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  menuItemId String
+  menuItem   MenuItem @relation(fields: [menuItemId], references: [id])
+  name       String   // snapshot at time of order
+  variant    String?
+  modifiers  Json?
+  qty        Int
+  unitCents  Int
+  notes      String?
+}
+
+enum PaymentStatus {
+  PENDING
+  SUCCEEDED
+  FAILED
+  REFUNDED
+  PARTIALLY_REFUNDED
+}
+
+model Payment {
+  id                String        @id @default(cuid())
+  orderId           String?
+  order             Order?        @relation(fields: [orderId], references: [id])
+  reservationId     String?
+  reservation       Reservation?  @relation(fields: [reservationId], references: [id])
+  provider          String        @default("stripe")
+  checkoutSessionId String?       @unique
+  paymentIntentId   String?       @unique
+  amountCents       Int
+  refundedCents     Int           @default(0)
+  status            PaymentStatus @default(PENDING)
+  raw               Json?
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+}
+
+// ---------- Reservations (Sprint 4) ----------
+enum ReservationStatus {
+  REQUESTED
+  CONFIRMED
+  DECLINED
+  SEATED
+  NO_SHOW
+  CANCELLED
+}
+
+model Reservation {
+  id          String            @id @default(cuid())
+  code        String            @unique
+  date        DateTime
+  pax         Int
+  occasion    String?
+  name        String
+  email       String
+  phone       String
+  notes       String?
+  status      ReservationStatus @default(REQUESTED)
+  userId      String?
+  user        User?             @relation(fields: [userId], references: [id])
+  payments    Payment[]
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  @@index([date, status])
+}
+
+// ---------- Loyalty (Sprint 5) ----------
+model LoyaltyAccount {
+  id        String       @id @default(cuid())
+  userId    String       @unique
+  user      User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  points    Int          @default(0)
+  tier      String       @default("Spark")
+  txns      LoyaltyTxn[]
+  createdAt DateTime     @default(now())
+}
+
+model LoyaltyTxn {
+  id        String         @id @default(cuid())
+  accountId String
+  account   LoyaltyAccount @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  points    Int            // + earn / - redeem
+  reason    String         // ORDER, IN_STORE, REDEEM, ADJUST, WELCOME
+  refId     String?
+  createdAt DateTime       @default(now())
+}
+
+model PromoCode {
+  id         String    @id @default(cuid())
+  code       String    @unique
+  percentOff Int?
+  amountOff  Int?
+  expiresAt  DateTime?
+  maxUses    Int?
+  uses       Int       @default(0)
+  active     Boolean   @default(true)
+}
+
+// ---------- Content & inbox ----------
+model Event {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  title     String
+  blurb     String?
+  image     String?
+  startsAt  DateTime
+  endsAt    DateTime?
+  published Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  message   String
+  handled   Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model NewsletterSub {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  source    String?
+  createdAt DateTime @default(now())
+}
+
+// Key/value settings editable from admin (hours, slot capacity, delivery fee, banners)
+model Setting {
+  key       String   @id
+  value     Json
+  updatedAt DateTime @updatedAt
+}

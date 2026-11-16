@@ -1,0 +1,94 @@
+*,
+*::before,
+*::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { -webkit-text-size-adjust: 100%; }
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+body {
+  background: var(--char);
+  color: var(--text);
+  font-family: var(--f-body);
+  font-size: var(--fs-body);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+img, video, canvas, svg { display: block; max-width: 100%; }
+img { height: auto; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+input, textarea, select { font: inherit; color: inherit; }
+ul { list-style: none; }
+
+::selection { background: var(--red); color: var(--white); }
+
+:focus-visible { outline: 2px dashed var(--lime); outline-offset: 4px; }
+
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--char); }
+::-webkit-scrollbar-thumb { background: var(--char-3); border-radius: 10px; border: 2px solid var(--char); }
+::-webkit-scrollbar-thumb:hover { background: var(--red); }
+
+/* ---------- Layout utilities ---------- */
+.container { width: 100%; max-width: var(--max); margin-inline: auto; padding-inline: var(--gutter); }
+.section { padding-block: var(--section-y); position: relative; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ---------- Type utilities ---------- */
+.display { font-family: var(--f-display); text-transform: uppercase; line-height: 0.88; letter-spacing: 0.005em; font-weight: 400; }
+.western { font-family: var(--f-western); font-weight: 400; }
+.script { font-family: var(--f-script); font-weight: 400; }
+.outline { color: transparent; -webkit-text-stroke: 1.5px var(--cream); }
+.outline-red { color: transparent; -webkit-text-stroke: 1.5px var(--red); }
+.text-red { color: var(--red); }
+.text-lime { color: var(--lime); }
+.text-amber { color: var(--amber); }
+.text-dim { color: var(--text-dim); }
+
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 0.6em;
+  font-family: var(--f-body); font-weight: 800; font-size: var(--fs-micro);
+  letter-spacing: 0.28em; text-transform: uppercase; color: var(--text-dim);
+}
+.eyebrow::before { content: ''; width: 28px; height: 2px; background: var(--red); }
+
+.lead { font-size: clamp(1.05rem, 1rem + 0.35vw, 1.3rem); color: var(--text-dim); max-width: 46ch; }
+
+/* ---------- Grain overlay (film look) ---------- */
+.grain {
+  position: fixed; inset: 0; z-index: 90; pointer-events: none; opacity: 0.05; contain: strict;
+  background: url('/brand/grain.png') repeat; background-size: 128px;
+  /* static on purpose: an animated full-screen noise layer repaints every frame */
+}
+@keyframes grain {
+  0% { transform: translate(0, 0); } 20% { transform: translate(-6%, 4%); } 40% { transform: translate(5%, -7%); }
+  60% { transform: translate(-3%, 8%); } 80% { transform: translate(7%, 2%); } 100% { transform: translate(0, 0); }
+}
+
+/* ---------- Custom cursor (desktop) ---------- */
+.cursor, .cursor-ring { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 120; border-radius: 50%; opacity: 0; transition: opacity 0.3s; }
+body.has-cursor .cursor, body.has-cursor .cursor-ring { opacity: 1; }
+.cursor { width: 8px; height: 8px; background: var(--red); margin: -4px 0 0 -4px; }
+.cursor-ring {
+  width: 44px; height: 44px; margin: -22px 0 0 -22px; border: 1.5px solid rgba(245, 239, 230, 0.45);
+  display: grid; place-items: center; font: 800 10px/1 var(--f-body); letter-spacing: 0.14em; text-transform: uppercase;
+  transition: width 0.35s var(--ease-out), height 0.35s var(--ease-out), margin 0.35s var(--ease-out), background 0.3s, border-color 0.3s;
+}
+.cursor-ring span { opacity: 0; transition: opacity 0.2s; color: var(--ink); }
+.cursor-ring.is-hover { width: 70px; height: 70px; margin: -35px 0 0 -35px; border-color: var(--red); }
+.cursor-ring.is-label { width: 92px; height: 92px; margin: -46px 0 0 -46px; background: var(--lime); border-color: var(--lime); }
+.cursor-ring.is-label span { opacity: 1; }
+@media (hover: none), (pointer: coarse) { .cursor, .cursor-ring { display: none; } }
+
+/* ---------- Page wrapper (moves during MoCo transitions) ---------- */
+/* no permanent transform/will-change here: it would break position:fixed pins inside */
+.page { position: relative; min-height: 100vh; transform-origin: 50% 30vh; }
+
+@media (prefers-reduced-motion: reduce) {
+  .grain { animation: none; }
+  *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+}

@@ -1,0 +1,30 @@
+/* ================= PLACEHOLDER / 404 ================= */
+.ph { position: relative; min-height: 100vh; display: grid; align-items: center; overflow: hidden; padding: calc(var(--nav-h) + 3rem) 0 5rem; }
+.ph__fx { position: absolute; inset: 0; pointer-events: none; background:
+  radial-gradient(ellipse 70% 45% at 50% 115%, rgba(255, 178, 56, 0.55), transparent 60%),
+  radial-gradient(ellipse 90% 60% at 50% 120%, rgba(218, 56, 51, 0.7), transparent 70%),
+  radial-gradient(ellipse 60% 40% at 85% 0%, rgba(218, 56, 51, 0.12), transparent 70%); }
+.ph__inner { position: relative; display: grid; gap: var(--s-5); justify-items: start; }
+.ph__flame { width: 44px; color: var(--red); animation: flicker 2s infinite; filter: drop-shadow(0 0 16px rgba(218, 56, 51, 0.7)); }
+.ph__title { font-size: var(--fs-mega); }
+.ph__ctas { display: flex; gap: var(--s-3); flex-wrap: wrap; }
+
+/* ================= STYLEGUIDE ================= */
+.sg { padding: calc(var(--nav-h) + 4rem) 0 0; }
+.sg__head { display: grid; gap: var(--s-4); margin-bottom: var(--s-8); }
+.sg__title { font-size: var(--fs-mega); }
+.sg__block { padding: var(--s-7) 0; border-top: 1px solid var(--line); display: grid; gap: var(--s-5); }
+.sg__h { font: 800 0.75rem/1 var(--f-body); letter-spacing: 0.26em; text-transform: uppercase; color: var(--red); }
+.sg__colors { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: var(--s-4); }
+.sg__swatch { display: grid; gap: 0.35rem; font-size: var(--fs-small); }
+.sg__swatch span { aspect-ratio: 1.3; border-radius: var(--r-2); border: 1px solid var(--line); }
+.sg__swatch code { color: var(--text-faint); font-size: 0.72rem; }
+.sg__type { display: grid; gap: var(--s-4); }
+.sg__row { display: flex; flex-wrap: wrap; gap: var(--s-4); align-items: center; }
+.sg__form { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-4); max-width: 720px; }
+.field--wide { grid-column: span 2; }
+.sg__push { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-4); margin-bottom: var(--s-7); }
+.sg__push-card { display: grid; gap: 0.6rem; font-weight: 700; }
+.sg__push-card img { aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--r-2); width: 100%; transition: transform 0.6s var(--ease-ramp); }
+.sg__push-card:hover img { transform: scale(1.03) rotate(-1deg); }
+@media (max-width: 640px) { .sg__push, .sg__form { grid-template-columns: 1fr; } .field--wide { grid-column: auto; } }

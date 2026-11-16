@@ -1,0 +1,28 @@
+# Render blueprint — API service (staging). Set secrets in the Render dashboard.
+services:
+  - type: web
+    name: brewgrillz-api
+    runtime: node
+    rootDir: server
+    region: singapore
+    plan: starter
+    buildCommand: npm install && npx prisma migrate deploy
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: CLIENT_ORIGIN
+        value: https://brewgrillz.vercel.app
+      - key: DATABASE_URL
+        sync: false
+      - key: DIRECT_URL
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: STRIPE_SECRET_KEY
+        sync: false
+      - key: STRIPE_WEBHOOK_SECRET
+        sync: false
+      - key: RESEND_API_KEY
+        sync: false
