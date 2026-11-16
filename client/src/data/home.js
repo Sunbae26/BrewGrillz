@@ -99,3 +99,47 @@ export const vibes = [
   { type: 'text', big: 'Hangouts', small: 'Bugis after work. Bugis after dark.', tone: 'lime' },
   { type: 'img', image: img('carbonara'), caption: 'Classic carbonara' },
 ]
+
+// "The grill picks for you" slot machine — normal à-la-carte menu prices (Jan 2026 menu). Not a combo/deal.
+export const slot = {
+  starters: [
+    { name: 'Truffle Fries', price: 8.5 },
+    { name: 'Signature Chicken Wings', price: 10.9 },
+    { name: 'Salt & Pepper Squid', price: 10.9 },
+    { name: 'Mini Sliders Trio', price: 14.9 },
+    { name: 'Nachos Supreme', price: 12.5 },
+    { name: 'Stuffed Mushrooms', price: 9.9 },
+    { name: 'Cheesy Wedges', price: 10.9 },
+    { name: 'Kick-In Shrimp', price: 11.9 },
+    { name: 'Burrata Salad', price: 12.9 },
+    { name: 'Truffle Mushroom Soup', price: 7.5 },
+    { name: 'Spicy Shrimp Skewers', price: 11.9 },
+  ],
+  mains: [
+    { name: 'Grass-Fed Tenderloin', price: 39.9 },
+    { name: 'Grass-Fed Ribeye', price: 34.9 },
+    { name: 'Sirloin Steak', price: 23.9 },
+    { name: 'BBQ Pork Ribs (Half)', price: 22.8 },
+    { name: 'Herb-Crusted Salmon', price: 22.9 },
+    { name: 'Raclette Beef Burger', price: 19.9 },
+    { name: 'Honey Garlic Chicken Pizza', price: 17.9 },
+    { name: 'Classic Carbonara', price: 17.9 },
+    { name: 'Seafood Linguini', price: 20.9 },
+    { name: 'Lamb Kofte', price: 18.5 },
+    { name: 'Herb Pork Chop', price: 17.9 },
+    { name: 'Fish & Chips', price: 16.9 },
+  ],
+  drinks: [
+    { name: 'Golden Ale (pint)', price: 13.5 },
+    { name: 'What the Helles (pint)', price: 13.5 },
+    { name: 'Dream Blonde (pint)', price: 13.5 },
+    { name: 'Singapore Sling', price: 18 },
+    { name: 'Espresso Martini', price: 14 },
+    { name: 'Mojito', price: 16 },
+    { name: 'Frozen Margarita', price: 18 },
+    { name: 'Aperol Spritz', price: 12 },
+    { name: 'Virgin Mojito', price: 8.5 },
+    { name: 'Mango Madness', price: 6.5 },
+    { name: 'Lychee Tea', price: 7.5 },
+  ],
+}

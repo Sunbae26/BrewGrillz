@@ -63,7 +63,7 @@
 
 /* ================= MAIN EVENT (pinned fly-through) ================= */
 .me { position: relative; }
-.me { padding-block: var(--section-y); }
+.me { padding-block: var(--section-y) clamp(3rem, 6vw, 5rem); }
 .me__stage { position: relative; overflow: hidden; display: grid; grid-template-columns: 1.35fr 1fr; align-items: center; }
 .me__words { position: absolute; inset: 0; display: grid; place-items: center; pointer-events: none; z-index: 0; }
 .me__word { grid-area: 1 / 1; font-size: clamp(6rem, 22vw, 24rem); -webkit-text-stroke: 1px rgba(245, 239, 230, 0.13); white-space: nowrap; }
@@ -112,7 +112,50 @@
 }
 
 
+/* ================= SLOT MACHINE: "Let the grill pick" ================= */
+.slot { padding-block: clamp(2rem, 5vw, 4rem) clamp(1rem, 3vw, 2rem); }
+.slot__wrap { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: clamp(2rem, 5vw, 4.5rem); align-items: center; }
+.slot__intro { display: grid; gap: var(--s-5); justify-items: start; }
+.slot__title { font-size: var(--fs-h2); }
+.machine { --tile: 112px; position: relative; border-radius: 28px; padding: 1.4rem 1.4rem 1.6rem; background: linear-gradient(180deg, #2a2220, #171211);
+  border: 2px solid #4a2a26; box-shadow: 0 0 0 6px #120e0d, 0 0 0 7px rgba(218, 56, 51, 0.35), 0 40px 80px -30px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.06); }
+.machine__sign { text-align: center; font-size: clamp(2rem, 4vw, 3rem); margin: 0.2rem 0 1.1rem; }
+.machine__body { display: grid; grid-template-columns: 1fr auto; gap: 1rem; align-items: center; }
+.machine__reels { position: relative; display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; padding: 0.7rem; border-radius: 16px; background: #0d0a09; box-shadow: inset 0 6px 20px rgba(0, 0, 0, 0.8); }
+.reel { display: grid; gap: 0.4rem; min-width: 0; }
+.reel__label { font: 800 0.6rem/1 var(--f-body); letter-spacing: 0.22em; text-transform: uppercase; color: var(--text-faint); text-align: center; }
+.reel__window { position: relative; height: calc(var(--tile) * 1.8); overflow: hidden; border-radius: 10px; background: var(--paper);
+  -webkit-mask-image: linear-gradient(180deg, transparent, #000 22%, #000 78%, transparent); mask-image: linear-gradient(180deg, transparent, #000 22%, #000 78%, transparent); }
+.reel__strip { padding-top: calc(var(--tile) * 0.4); will-change: transform; }
+.reel__tile { height: var(--tile); display: grid; align-content: center; justify-items: center; gap: 0.35rem; padding: 0 0.5rem; text-align: center; color: var(--ink); border-bottom: 1px dashed rgba(26, 21, 20, 0.15); }
+.reel__name { font: 400 clamp(0.95rem, 1.45vw, 1.35rem)/1.12 var(--f-display); text-transform: uppercase; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.reel__price { font: 800 0.8rem/1 var(--f-body); color: var(--red-deep); }
+.machine__payline { position: absolute; left: 0.4rem; right: 0.4rem; top: calc(0.7rem + 0.6rem + 0.4rem + var(--tile) * 0.4); height: var(--tile); border-block: 2px solid rgba(218, 56, 51, 0.75); border-radius: 6px; pointer-events: none; box-shadow: 0 0 18px rgba(218, 56, 51, 0.35); }
+.lever { position: relative; width: 46px; height: calc(var(--tile) * 2.2); display: block; cursor: pointer; }
+.lever:disabled { cursor: progress; }
+.lever__arm { position: absolute; left: 50%; bottom: 22px; width: 8px; height: 78%; margin-left: -4px; border-radius: 6px; transform-origin: 50% 100%;
+  background: linear-gradient(90deg, #8a8580, #e9e3dc 45%, #7a746f); }
+.lever__ball { position: absolute; left: 50%; top: -18px; width: 34px; height: 34px; margin-left: -17px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #ff9b90, var(--red) 45%, var(--red-deep)); box-shadow: 0 6px 14px rgba(0, 0, 0, 0.5), 0 0 18px rgba(218, 56, 51, 0.45); }
+.lever__base { position: absolute; left: 50%; bottom: 0; width: 40px; height: 26px; margin-left: -20px; border-radius: 8px; background: linear-gradient(180deg, #4a4340, #221c1b); }
+.lever:hover .lever__ball { filter: brightness(1.15); }
+.machine__foot { display: grid; gap: 0.9rem; justify-items: center; text-align: center; margin-top: 1.3rem; }
+.machine__result { min-height: 3em; max-width: 52ch; color: var(--cream); font-weight: 600; }
+.machine__result span { color: var(--text-dim); font-weight: 500; }
+.machine__result b { color: var(--amber); font: 400 1.4rem/1 var(--f-display); }
+.machine__ctas { display: flex; gap: 0.6rem; flex-wrap: wrap; justify-content: center; }
+.machine__note { color: var(--text-faint); font-size: 0.72rem; }
+@media (max-width: 900px) { .slot__wrap { grid-template-columns: 1fr; } }
+@media (max-width: 560px) {
+  .machine { --tile: 80px; padding: 1rem 0.8rem 1.2rem; }
+  .machine__body { grid-template-columns: 1fr; }
+  .lever { display: none; }
+  .machine__reels { gap: 0.35rem; padding: 0.5rem; }
+  .machine__payline { top: calc(0.5rem + 0.6rem + 0.4rem + var(--tile) * 0.4); }
+  .reel__tile { padding: 0 0.25rem; }
+}
+
 /* ================= PICK YOUR FIRE ================= */
+.pyf { padding-top: clamp(3.5rem, 7vw, 6rem); }
 .pyf__grid { display: grid; grid-template-columns: repeat(12, 1fr); grid-auto-rows: minmax(310px, auto); gap: clamp(1rem, 2vw, 1.6rem); perspective: 1400px; }
 .pyf__card { position: relative; display: flex; flex-direction: column; border-radius: var(--r-3); background: var(--char-2); border: 1px solid var(--line); overflow: visible; transform-style: preserve-3d; transition: border-color 0.4s; }
 .pyf__card:hover { border-color: rgba(218, 56, 51, 0.6); }
