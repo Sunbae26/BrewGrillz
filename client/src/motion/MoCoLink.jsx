@@ -2,7 +2,7 @@ import { useMoCo } from './MoCoProvider'
 
 /**
  * Drop-in link with MoCo transitions.
- *  <MoCoLink to="/menu">Menu</MoCoLink>                 → whip-pan
+ *  <MoCoLink to="/menu">Menu</MoCoLink>                 → neon flicker transition
  *  <MoCoLink to="/menu" push>…<img data-push/>…</MoCoLink> → camera push-in from the image
  * External links (http, mailto, tel, wa.me) behave like normal anchors.
  */
