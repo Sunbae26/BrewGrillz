@@ -82,7 +82,7 @@ export default function Hero() {
               on tap. Right on Rochor Road.
             </p>
             <div className="hero__ctas">
-              <Button to="/order" variant="primary" size="lg" icon={<Arrow />}>Order online</Button>
+              <Button to="/menu" variant="primary" size="lg" icon={<Arrow />}>Order online</Button>
               <Button to="/reserve" variant="ghost" size="lg">Book a table</Button>
             </div>
           </div>

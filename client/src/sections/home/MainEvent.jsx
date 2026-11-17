@@ -153,7 +153,7 @@ export default function MainEvent() {
                 <p className="me__desc">{d.desc}</p>
                 <div className="me__buy">
                   <span className="me__price"><small>$</small>{d.price}<em>{d.weight}</em></span>
-                  <Button to="/order" variant="primary" size="sm" icon={<Arrow />} tabIndex={i === index ? 0 : -1}>Order</Button>
+                  <Button to={d.id === "mixed-grill" ? "/menu#platters" : "/menu#grill"} variant="primary" size="sm" icon={<Arrow />} tabIndex={i === index ? 0 : -1}>Order</Button>
                 </div>
               </article>
             ))}

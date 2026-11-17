@@ -14,6 +14,14 @@ export const env = {
   MAIL_FROM: process.env.MAIL_FROM || 'BrewGrillz <hello@brewgrillz.sg>',
   RESTAURANT_EMAIL: process.env.RESTAURANT_EMAIL || 'info@brewgrillz.sg',
   WHATSAPP_ENABLED: bool(process.env.WHATSAPP_ENABLED),
+  WHATSAPP_TOKEN: process.env.WHATSAPP_TOKEN || '',
+  WHATSAPP_PHONE_ID: process.env.WHATSAPP_PHONE_ID || '',
+  // where links in emails/WhatsApp point (tracking pages)
+  PUBLIC_SITE_URL: (process.env.PUBLIC_SITE_URL || 'http://localhost:5173').replace(/\/$/, ''),
+  // TEMPORARY until the staff login in Sprint 5: header x-staff-key for order status/refund endpoints
+  STAFF_API_KEY: process.env.STAFF_API_KEY || '',
+  // dev only: skip Stripe and mark orders paid instantly (never works in production)
+  DEV_FAKE_PAYMENTS: bool(process.env.DEV_FAKE_PAYMENTS),
   TRUST_PROXY: process.env.TRUST_PROXY ?? '1',
 }
 

@@ -135,7 +135,7 @@ export default function SlotPick() {
             </p>
             <div className="machine__ctas">
               <Button variant="primary" onClick={spin} disabled={spinning}>{spinning ? 'Spinning…' : spun ? 'Spin again' : 'Spin'}</Button>
-              {spun && <Button to="/order" variant="ghost" icon={<Arrow />}>Order these</Button>}
+              {spun && <Button to="/menu" variant="ghost" icon={<Arrow />}>Order these</Button>}
             </div>
             <small className="machine__note">Regular menu prices, incl. GST. Just for fun: not a set meal or promotion.</small>
           </div>

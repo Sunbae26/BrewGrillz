@@ -7,10 +7,13 @@ import Cursor from './components/Cursor'
 import Home from './pages/Home'
 import Styleguide from './pages/Styleguide'
 import Menu from './pages/Menu'
+import Order from './pages/Order'
+import Track from './pages/Track'
+import CartProvider from './cart/CartProvider'
+import CartDrawer from './cart/CartDrawer'
 import Placeholder from './pages/Placeholder'
 
 const soon = [
-  { path: '/order', title: 'Order Online', sprint: 3, blurb: 'Cart, checkout and secure online payment for pickup or delivery. Coming in Sprint 3.' },
   { path: '/reserve', title: 'Book a Table', sprint: 4, blurb: 'Pick a date, time and crew size. Until then, WhatsApp us on +65 8770 2077.' },
   { path: '/bar', title: 'The Bar', sprint: 4, blurb: 'Brewerkz taps, buckets, cocktails, wines and premium spirits — the full neon treatment.' },
   { path: '/our-place', title: 'Our Place', sprint: 4, blurb: 'The room, the music, the story. Stylish, cosy and a little bit rustic.' },
@@ -30,6 +33,9 @@ function Shell() {
           <Route path="/" element={<Home />} />
           <Route path="/styleguide" element={<Styleguide />} />
           <Route path="/menu" element={<Menu />} />
+          <Route path="/order" element={<Order />} />
+          <Route path="/track" element={<Track />} />
+          <Route path="/track/:token" element={<Track />} />
           {soon.map((p) => (
             <Route key={p.path} path={p.path} element={<Placeholder {...p} />} />
           ))}
@@ -37,6 +43,7 @@ function Shell() {
         </Routes>
         <Footer />
       </main>
+      <CartDrawer />
       <Cursor />
       <div className="grain" aria-hidden="true" />
     </MoCoProvider>
@@ -46,7 +53,9 @@ function Shell() {
 export default function App() {
   return (
     <SmoothScroll>
-      <Shell />
+      <CartProvider>
+        <Shell />
+      </CartProvider>
     </SmoothScroll>
   )
 }

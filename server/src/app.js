@@ -7,6 +7,9 @@ import { env, isProd } from './lib/env.js'
 import health from './routes/health.js'
 import newsletter from './routes/newsletter.js'
 import menu from './routes/menu.js'
+import ordersRouter from './routes/orders.js'
+import staff from './routes/staff.js'
+import stripeWebhook from './routes/stripeWebhook.js'
 
 export function createApp() {
   const app = express()
@@ -17,8 +20,8 @@ export function createApp() {
   app.use(cors({ origin: env.CLIENT_ORIGIN, credentials: true }))
   app.use(morgan(isProd ? 'combined' : 'dev'))
 
-  // Stripe webhooks need the RAW body — mount them BEFORE express.json() (Sprint 3):
-  // app.post('/api/webhooks/stripe', express.raw({ type: 'application/json' }), stripeWebhook)
+  // Stripe webhooks need the RAW body — mounted BEFORE express.json()
+  app.post('/api/webhooks/stripe', express.raw({ type: 'application/json' }), stripeWebhook)
 
   app.use(express.json({ limit: '200kb' }))
 
@@ -27,7 +30,10 @@ export function createApp() {
   app.use('/api/health', health)
   app.use('/api/newsletter', formLimiter, newsletter)
   app.use('/api/menu', menu)
-  // Sprint 3: app.use('/api/orders', orders)
+  const orderLimiter = rateLimit({ windowMs: 10 * 60 * 1000, limit: 15, standardHeaders: 'draft-7', legacyHeaders: false })
+  app.post('/api/orders', orderLimiter)
+  app.use('/api/orders', ordersRouter)
+  app.use('/api/staff', staff) // temporary until the Sprint 5 staff login
   // Sprint 4: app.use('/api/reservations', reservations); app.use('/api/contact', contact)
   // Sprint 5: app.use('/api/auth', auth); app.use('/api/loyalty', loyalty); app.use('/api/admin', admin)
 

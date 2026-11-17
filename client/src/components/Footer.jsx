@@ -61,7 +61,8 @@ export default function Footer() {
           <ul className="footer__list">
             {nav.map((l) => <li key={l.to}><MoCoLink to={l.to}>{l.label}</MoCoLink></li>)}
             <li><MoCoLink to="/reserve">Book a table</MoCoLink></li>
-            <li><MoCoLink to="/order">Order online</MoCoLink></li>
+            <li><MoCoLink to="/menu">Order online</MoCoLink></li>
+            <li><MoCoLink to="/track">Track my order</MoCoLink></li>
           </ul>
         </div>
         <div>

@@ -25,6 +25,12 @@ export const site = {
   // and change this to '/media/hero.mp4'. While it's null, only the poster photo is shown (no wasted request).
   heroVideo: null,
   heroPoster: { src: '/images/food/mixed-grill-platter.webp', sm: '/images/food/mixed-grill-platter-sm.webp', xs: '/images/food/mixed-grill-platter-xs.webp' },
+  // Online orders are PICKUP ONLY. Delivery goes through the partners below.
+  // TODO: replace with BrewGrillz's exact store links from the client.
+  delivery: {
+    grab: 'https://food.grab.com/sg/en/',
+    foodpanda: 'https://www.foodpanda.sg/',
+  },
   priceNote: 'Prices include GST. 10% service charge applies to dine-in only.',
 }
 

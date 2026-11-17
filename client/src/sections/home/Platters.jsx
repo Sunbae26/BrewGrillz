@@ -22,7 +22,7 @@ export default function Platters() {
           </SectionHead>
           <div className="platters__ctas" data-reveal="0.2">
             <Button to="/reserve" variant="primary" icon={<Arrow />}>Book for the squad</Button>
-            <Button to="/order" variant="ghost">Order to share</Button>
+            <Button to="/menu#platters" variant="ghost">Order to share</Button>
           </div>
         </div>
 

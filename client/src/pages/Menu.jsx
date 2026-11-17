@@ -4,6 +4,10 @@ import menu from '../data/menu.json'
 import { Button, Sticker, Flame, Arrow } from '../components/ui'
 import { gsap, prefersReducedMotion } from '../motion/gsap'
 import { useLenis } from '../motion/SmoothScroll'
+import { useCart } from '../cart/CartProvider'
+import { QtyStepper } from '../cart/CartDrawer'
+import DeliveryLinks from '../components/DeliveryLinks'
+import { ORDERING, drinkRowId } from '../data/ordering'
 
 /*
   THE MENU — every dish + drink from the Jan 2026 menu (src/data/menu.json).
@@ -59,12 +63,25 @@ function DishCard({ item, onOpen, tableMode }) {
 }
 
 /* ---------- details modal ---------- */
-function DishModal({ item, onClose, tableMode }) {
+function DishModal({ item, onClose, tableMode, onAdded }) {
   const ref = useRef(null)
   const lenis = useLenis()
   const [variant, setVariant] = useState(0)
   const [choices, setChoices] = useState({})
+  const [qty, setQty] = useState(1)
+  const [notes, setNotes] = useState('')
+  const [missing, setMissing] = useState(null)
+  const { add } = useCart()
   const pic = item.image && img(item.image)
+
+  const addToOrder = () => {
+    const need = item.options?.find((o) => !choices[o.name])
+    if (need) return setMissing(need.name)
+    const v = item.variants?.[variant]
+    add({ itemId: item.id, name: item.name, image: item.image || null, variant: v?.name || null, options: { ...choices }, notes: notes.trim(), unitPrice: v ? v.price : item.price, qty })
+    onAdded(`${qty} × ${item.name}`)
+    onClose()
+  }
 
   useLayoutEffect(() => {
     lenis?.stop()
@@ -112,10 +129,10 @@ function DishModal({ item, onClose, tableMode }) {
           )}
           {item.options?.map((o) => (
             <div key={o.name} className="modal__group">
-              <span className="modal__label">{o.name}</span>
+              <span className="modal__label">{o.name} {missing === o.name && <em className="modal__err">Please choose one</em>}</span>
               <div className="chips">
                 {o.choices.map((c) => (
-                  <button key={c} type="button" className={`chip ${choices[o.name] === c ? 'is-on' : ''}`} onClick={() => setChoices((s) => ({ ...s, [o.name]: c }))}>
+                  <button key={c} type="button" className={`chip ${choices[o.name] === c ? 'is-on' : ''}`} onClick={() => { setChoices((s) => ({ ...s, [o.name]: c })); setMissing(null) }}>
                     {c}
                   </button>
                 ))}
@@ -123,12 +140,21 @@ function DishModal({ item, onClose, tableMode }) {
             </div>
           ))}
 
+          {!tableMode && (
+            <label className="modal__group">
+              <span className="modal__label">Notes for the kitchen (optional)</span>
+              <input className="modal__notes" maxLength={140} value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="e.g. no onions, sauce on the side" />
+            </label>
+          )}
           <div className="modal__buy">
-            <span className="modal__price">{fmt(price)}</span>
+            <span className="modal__price">{fmt(Math.round(price * qty * 100) / 100)}</span>
             {tableMode ? (
               <span className="modal__hint">Ready to order? Just call one of our team.</span>
             ) : (
-              <Button to="/order" variant="primary" icon={<Arrow />}>Order online</Button>
+              <>
+                <QtyStepper value={qty} min={1} onChange={(q) => setQty(Math.max(1, Math.min(ORDERING.maxQtyPerLine, q)))} />
+                <Button variant="primary" icon={<Arrow />} onClick={addToOrder}>Add to order</Button>
+              </>
             )}
           </div>
           <small className="modal__note">{menu.notes.prices}</small>
@@ -139,7 +165,8 @@ function DishModal({ item, onClose, tableMode }) {
 }
 
 /* ---------- drinks board ---------- */
-function Board({ cat }) {
+function Board({ cat, onAdd, tableMode }) {
+  const orderable = !tableMode && ORDERING.orderableDrinkCategories.includes(cat.id)
   return (
     <div className="board">
       {cat.sections.map((s) => (
@@ -166,6 +193,9 @@ function Board({ cat }) {
                     <span key={i} aria-label={s.cols[i] ? `${s.cols[i]} ${fmt(p)}` : undefined}>{p == null ? '—' : fmt(p)}</span>
                   ))}
                 </div>
+                {orderable && (
+                  <button type="button" className="board__add" aria-label={`Add ${r.name} to order`} onClick={() => onAdd({ itemId: drinkRowId(cat.id, r.name), name: r.name, image: null, variant: null, options: {}, notes: '', unitPrice: r.prices[0], qty: 1 })}>+</button>
+                )}
               </li>
             ))}
           </ul>
@@ -184,6 +214,18 @@ export default function Menu() {
   const [filters, setFilters] = useState([])
   const [open, setOpen] = useState(null)
   const closeModal = useCallback(() => setOpen(null), [])
+  const { add, setOpen: openCart } = useCart()
+  const [toast, setToast] = useState(null)
+  const toastTimer = useRef(null)
+  const onAdded = useCallback((label) => {
+    setToast(label)
+    clearTimeout(toastTimer.current)
+    toastTimer.current = setTimeout(() => setToast(null), 3200)
+  }, [])
+  const addDrink = (line) => {
+    add(line)
+    onAdded(`1 × ${line.name}`)
+  }
   const barRef = useRef(null)
   const lenis = useLenis()
   const cats = group === 'food' ? food : drinks
@@ -259,9 +301,10 @@ export default function Menu() {
             Sizzling steaks, Italian pizzas, pasta bowls and signature bites, plus Brewerkz craft beer, wines and cocktails.
           </p>
           <div className="mhero__actions">
-            {!tableMode && <Button to="/order" variant="primary" icon={<Arrow />}>Order online</Button>}
             <Button variant="ghost" onClick={() => window.print()}>Print menu</Button>
           </div>
+          {!tableMode && <p className="mhero__how"><b>Order online for pickup:</b> tap any dish, add it to your order, then check out. Pay online, collect at 163 Rochor Road.</p>}
+          {!tableMode && <DeliveryLinks />}
           <p className="mhero__note">{menu.notes.prices}</p>
         </div>
       </header>
@@ -330,8 +373,9 @@ export default function Menu() {
               <section key={c.id} id={`cat-${c.id}`} data-cat={c.id} className="mcat mcat--drinks">
                 <header className="mcat__head">
                   <h2 className="display mcat__title">{c.name}</h2>
+                  {!ORDERING.orderableDrinkCategories.includes(c.id) && <span className="mcat__dinein">Dine-in only · not available for online orders</span>}
                 </header>
-                <Board cat={c} />
+                <Board cat={c} onAdd={addDrink} tableMode={tableMode} />
               </section>
             ))}
 
@@ -364,7 +408,13 @@ export default function Menu() {
         <p>{menu.notes.prices} {menu.notes.dietary}</p>
       </div>
 
-      {open && <DishModal item={open} onClose={closeModal} tableMode={tableMode} />}
+      {open && <DishModal item={open} onClose={closeModal} tableMode={tableMode} onAdded={onAdded} />}
+      {toast && (
+        <div className="toast" role="status">
+          <span>Added <b>{toast}</b></span>
+          <button type="button" onClick={() => { setToast(null); openCart(true) }}>View order →</button>
+        </div>
+      )}
     </div>
   )
 }

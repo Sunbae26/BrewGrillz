@@ -4,6 +4,10 @@
     {
       "source": "/api/(.*)",
       "destination": "https://brewgrillz-api.onrender.com/api/$1"
+    },
+    {
+      "source": "/track/:token",
+      "destination": "/track"
     }
   ],
   "headers": [

@@ -71,7 +71,6 @@ model MenuItem {
   category     MenuCategory    @relation(fields: [categoryId], references: [id])
   variants     MenuVariant[]
   modifiers    ModifierGroup[]
-  orderItems   OrderItem[]
   createdAt    DateTime        @default(now())
   updatedAt    DateTime        @updatedAt
 }
@@ -123,9 +122,11 @@ enum Fulfilment {
 model Order {
   id            String      @id @default(cuid())
   number        Int         @unique @default(autoincrement())
+  trackingToken String      @unique // secret for the guest tracking link
   status        OrderStatus @default(PENDING_PAYMENT)
+  history       Json?       // [{ status, at }] for the tracking timeline
   fulfilment    Fulfilment  @default(PICKUP)
-  scheduledFor  DateTime?
+  scheduledFor  DateTime?   // pickup time
   customerName  String
   customerEmail String
   customerPhone String
@@ -152,8 +153,7 @@ model OrderItem {
   id         String   @id @default(cuid())
   orderId    String
   order      Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  menuItemId String
-  menuItem   MenuItem @relation(fields: [menuItemId], references: [id])
+  itemSlug   String   // menu.json id (e.g. "ribeye") — kept as a snapshot, not a foreign key
   name       String   // snapshot at time of order
   variant    String?
   modifiers  Json?

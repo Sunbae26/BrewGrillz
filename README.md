@@ -90,8 +90,51 @@ Everything respects **prefers-reduced-motion** and runs lighter on phones.
   Until the file exists the hero shows the poster photo (`heroPoster` in `src/data/site.js`).
 - **Photos:** export to WebP at 1800px and 900px (`name.webp`, `name-sm.webp`) into `public/images/food/`.
 
+## Online ordering (pickup only)
+- **Rules** live in `client/src/data/ordering.js` and are shared by the site and the server:
+  kitchen hours 11:30–22:30 (Singapore time), 15-minute slots, 30 minutes' notice, up to 6 days ahead.
+  Add public holidays or closures to `closedDates` (`'2026-12-25'`).
+- **Alcohol is dine-in only.** Only soft drinks/mocktails and coffee/tea can be ordered online
+  (`orderableDrinkCategories`). The server refuses anything else, whatever the browser sends.
+- **Prices** are always recalculated on the server from `menu.json`; the cart total is for display.
+- **Delivery** goes through GrabFood and foodpanda — set the real store links in `site.js` → `delivery`.
+- **Tracking:** after paying, the customer lands on `/track/<token>` (also in their email and WhatsApp).
+  Orders placed in this browser are listed at `/track`.
+
+### Test it locally without Stripe
+In `server/.env` set `DEV_FAKE_PAYMENTS=true` and leave `STRIPE_SECRET_KEY` empty.
+Checkout then marks the order paid straight away and sends you to the tracking page.
+Orders are saved to `server/.dev-data/orders.json` when there's no `DATABASE_URL`.
+
+Move an order along (staff screens arrive in Sprint 5 — until then use the API):
+```bash
+KEY=change-me-staff-key   # STAFF_API_KEY from server/.env
+curl -s localhost:4000/api/staff/orders -H "x-staff-key: $KEY"
+curl -s -X POST localhost:4000/api/staff/orders/<id>/status -H "x-staff-key: $KEY" -H "content-type: application/json" -d '{"status":"ACCEPTED"}'
+# then PREPARING → READY → COMPLETED
+curl -s -X POST localhost:4000/api/staff/orders/<id>/refund -H "x-staff-key: $KEY" -H "content-type: application/json" -d '{}'          # full refund
+curl -s -X POST localhost:4000/api/staff/orders/<id>/refund -H "x-staff-key: $KEY" -H "content-type: application/json" -d '{"amountCents":500}'  # partial
+```
+
+### Stripe (when keys are ready)
+1. Put `STRIPE_SECRET_KEY` (test key first) in `server/.env` and set `DEV_FAKE_PAYMENTS=false`.
+2. Webhooks locally: `stripe listen --forward-to localhost:4000/api/webhooks/stripe` and copy the
+   `whsec_…` it prints into `STRIPE_WEBHOOK_SECRET`.
+3. In production add a webhook in the Stripe dashboard pointing to
+   `https://<api-domain>/api/webhooks/stripe` with these events:
+   `checkout.session.completed`, `checkout.session.async_payment_succeeded`,
+   `checkout.session.async_payment_failed`, `checkout.session.expired`.
+4. Turn on PayNow, Apple Pay and Google Pay under Settings → Payment methods (Checkout shows them automatically).
+
+### Email and WhatsApp
+- Email (Resend): `RESEND_API_KEY`, `MAIL_FROM`, `RESTAURANT_EMAIL`. Without a key, emails are printed in the server log.
+- WhatsApp (Meta Cloud API): `WHATSAPP_TOKEN`, `WHATSAPP_PHONE_ID`. Create and get approval for these templates
+  (language `en`): `bgz_order_received` (name, order no., pickup time, link), `bgz_order_ready` (name, order no.),
+  `bgz_order_refunded` (name, order no., amount). Without a token, messages are printed in the server log.
+
 ## Sprint status
 - ✅ Sprint 0 — repo, server, schema, deploy configs, design system, MoCo motion library, `/styleguide`
 - ✅ Sprint 1 — home page
 - ✅ Sprint 2 — menu page, menu data, seed + `/api/menu`, print menu, table-QR mode
-- ⏭ Sprint 3 — cart, checkout, Stripe payments, order notifications
+- ✅ Sprint 3 — cart, pickup checkout, Stripe payments, email/WhatsApp notifications, order tracking
+- ⏭ Sprint 4 — reservations and remaining pages

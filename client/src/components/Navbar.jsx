@@ -5,6 +5,7 @@ import { Button } from './ui'
 import { nav, site } from '../data/site'
 import { gsap, prefersReducedMotion } from '../motion/gsap'
 import { useLenis } from '../motion/SmoothScroll'
+import { useCart } from '../cart/CartProvider'
 
 export default function Navbar() {
   const [solid, setSolid] = useState(false)
@@ -13,6 +14,7 @@ export default function Navbar() {
   const menuRef = useRef(null)
   const lenis = useLenis()
   const { pathname } = useLocation()
+  const { count, ready, setOpen: openCart } = useCart()
 
   useEffect(() => {
     let last = window.scrollY
@@ -60,8 +62,12 @@ export default function Navbar() {
           </nav>
           <div className="nav__cta">
             <Button to="/reserve" variant="ghost" size="sm">Book a table</Button>
-            <Button to="/order" variant="primary" size="sm">Order online</Button>
+            <Button to="/menu" variant="primary" size="sm">Order online</Button>
           </div>
+          <button type="button" className="cartbtn" onClick={() => openCart(true)} aria-label={`Your order${ready && count ? `, ${count} items` : ''}`} data-cursor="hover">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" aria-hidden="true"><path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8L5 8Z" /><path d="M9 8V6a3 3 0 0 1 6 0v2" /></svg>
+            {ready && count > 0 && <span className="cartbtn__n">{count}</span>}
+          </button>
           <button className={`burger ${open ? 'is-open' : ''}`} onClick={() => setOpen((o) => !o)} aria-label="Menu" aria-expanded={open}>
             <span /><span />
           </button>
@@ -79,7 +85,7 @@ export default function Navbar() {
             ))}
           </nav>
           <div className="mnav__foot">
-            <Button to="/order" variant="primary">Order online</Button>
+            <Button to="/menu" variant="primary">Order online</Button>
             <a href={site.whatsappHref} className="mnav__wa">WhatsApp {site.whatsapp}</a>
           </div>
         </div>

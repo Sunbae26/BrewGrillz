@@ -1,5 +1,6 @@
 import { site } from '../../data/site'
 import { Button, Arrow } from '../../components/ui'
+import DeliveryLinks from '../../components/DeliveryLinks'
 
 /* Straight to the point: when we're open, where we are, how to reach us. Static = zero cost. */
 export default function InfoStrip() {
@@ -27,7 +28,8 @@ export default function InfoStrip() {
           <span className="info__s">Quick replies</span>
         </a>
         <div className="info__cta">
-          <Button to="/order" variant="primary" icon={<Arrow />}>Order online</Button>
+          <Button to="/menu" variant="primary" icon={<Arrow />}>Order for pickup</Button>
+          <DeliveryLinks compact />
         </div>
       </div>
     </section>

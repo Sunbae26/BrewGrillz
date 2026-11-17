@@ -15,7 +15,7 @@ const fonts = [pick(/^anton-latin-400-normal-.*\.woff2$/), pick(/^manrope-latin-
 const preloads = fonts.map((f) => `<link rel="preload" as="font" type="font/woff2" href="/assets/${f}" crossorigin />`).join('\n    ')
 template = template.replace('</head>', `    ${preloads}\n  </head>`)
 
-const routes = ['/', '/styleguide', '/menu', '/order', '/reserve', '/bar', '/our-place', '/events', '/rewards', '/privacy', '/terms']
+const routes = ['/', '/styleguide', '/menu', '/order', '/track', '/reserve', '/bar', '/our-place', '/events', '/rewards', '/privacy', '/terms']
 for (const url of routes) {
   const html = template.replace('<div id="root"><!--app-html--></div>', `<div id="root" data-route="${url}">${render(url)}</div>`)
   if (url === '/') {
