@@ -42,7 +42,9 @@ export function createApp() {
   // eslint-disable-next-line no-unused-vars
   app.use((err, _req, res, _next) => {
     console.error('[error]', err)
-    res.status(err.status || 500).json({ error: isProd ? 'Something went wrong' : err.message })
+    const status = err.status || 500
+    // never show internal errors (database, Stripe…) to customers; the details are in the server log
+    res.status(status).json({ error: status >= 500 ? 'Something went wrong on our side. Please try again, or call us on +65 6312 2847.' : err.message })
   })
 
   return app

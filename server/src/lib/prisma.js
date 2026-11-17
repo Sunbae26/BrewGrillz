@@ -13,4 +13,5 @@ function client() {
 
 export const prisma = new Proxy({}, { get: (_t, prop) => client()[prop] })
 
-export const hasDb = () => Boolean(env.DATABASE_URL)
+// the .env.example placeholder counts as "no database", so local testing works before Neon is set up
+export const hasDb = () => Boolean(env.DATABASE_URL) && !/USER:PASSWORD|ep-xxxx/.test(env.DATABASE_URL)
