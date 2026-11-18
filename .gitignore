@@ -1,10 +1,12 @@
-node_modules/
-dist/
+node_modules
 .env
 .env.*
 !.env.example
 .DS_Store
+__MACOSX
+build
+.react-router
 *.log
-.vercel
-dist-ssr/
-.dev-data/
+backend/tmp
+qa/test-results
+qa/playwright-report

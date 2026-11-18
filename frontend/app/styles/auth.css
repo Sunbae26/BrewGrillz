@@ -1,0 +1,130 @@
+/* ============================================================
+   SPRINT 5 — sign in / sign up, My account, Rewards Club, checkout points
+   ============================================================ */
+
+/* ---------- auth pages ---------- */
+.auth { position: relative; overflow: hidden; padding: calc(var(--nav-h) + clamp(2.5rem, 6vw, 5rem)) 0 var(--section-y); min-height: 92vh; }
+.auth__glow { position: absolute; inset: -20% -10% auto auto; width: 60vw; height: 60vw; max-width: 760px; max-height: 760px; border-radius: 50%; background: radial-gradient(circle, rgba(218, 56, 51, 0.22), transparent 62%); pointer-events: none; }
+.auth__grid { position: relative; display: grid; grid-template-columns: minmax(0, 520px) minmax(0, 420px); justify-content: space-between; align-items: center; gap: var(--s-8); }
+.auth__card { display: grid; gap: var(--s-5); padding: clamp(1.5rem, 4vw, 2.6rem); border: 1px solid var(--line); border-radius: var(--r-3); background: rgba(29, 25, 24, 0.86); backdrop-filter: blur(8px); box-shadow: var(--shadow-card); }
+.auth__title { font-size: clamp(2.6rem, 6vw, 4.4rem); line-height: var(--lh-display); }
+.auth__intro { color: var(--text-dim); max-width: 42ch; }
+.auth__form { display: grid; gap: var(--s-4); }
+.auth__form .field input { width: 100%; }
+.auth__submit { width: 100%; justify-content: center; margin-top: var(--s-2); }
+.auth__link { color: var(--cream); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: rgba(218, 56, 51, 0.7); background: none; border: 0; padding: 0; cursor: pointer; font-size: inherit; justify-self: start; }
+.auth__link:hover { color: var(--red-hot); }
+.auth__footer { display: grid; gap: 0.5rem; padding-top: var(--s-4); border-top: 1px solid var(--line); color: var(--text-dim); font-size: var(--fs-small); }
+.auth__aside { display: grid; gap: var(--s-6); justify-items: start; }
+.auth__perks { display: grid; gap: 0.8rem; }
+.auth__perks li { position: relative; padding-left: 1.7rem; color: var(--text-dim); }
+.auth__perks li::before { content: ''; position: absolute; left: 0; top: 0.5em; width: 0.7rem; height: 0.7rem; border-radius: 50%; background: var(--lime); box-shadow: var(--glow-lime); }
+.auth__check { display: flex; gap: 0.7rem; align-items: flex-start; font-size: var(--fs-small); color: var(--text-dim); }
+.auth__check input { margin-top: 0.2rem; accent-color: var(--red); width: 1.05rem; height: 1.05rem; flex: none; }
+.field__hint, .field__error { font-size: 0.8rem; color: var(--text-faint); }
+.field__error { color: #ff8a80; font-weight: 600; }
+
+.falert { padding: 0.85rem 1rem; border-radius: var(--r-1); font-size: var(--fs-small); line-height: 1.5; }
+.falert--error { background: rgba(218, 56, 51, 0.14); border: 1px solid rgba(218, 56, 51, 0.5); color: #ffc2bd; }
+.falert--info { background: rgba(198, 255, 61, 0.08); border: 1px solid rgba(198, 255, 61, 0.35); color: var(--cream); }
+
+/* ---------- Rewards card ---------- */
+.rcard { position: relative; overflow: hidden; display: grid; gap: 0.55rem; width: min(100%, 400px); aspect-ratio: 1.58; padding: 1.5rem 1.6rem; border-radius: 22px;
+  background: radial-gradient(120% 90% at 100% 0%, rgba(218, 56, 51, 0.55), transparent 55%), linear-gradient(150deg, #2a2321, #120f0e 70%);
+  border: 1px solid rgba(245, 239, 230, 0.16); box-shadow: 0 30px 60px -24px rgba(0, 0, 0, 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.08); transform: rotate(-3deg); }
+.rcard::after { content: ''; position: absolute; inset: 0; background: linear-gradient(115deg, transparent 35%, rgba(255, 255, 255, 0.09) 48%, transparent 60%); pointer-events: none; }
+.rcard__top { display: flex; justify-content: space-between; align-items: center; }
+.rcard__brand { font: 400 1.15rem/1 var(--f-display); letter-spacing: 0.04em; }
+.rcard__brand b { color: var(--red); font-weight: 400; }
+.rcard__flame { width: 26px; color: var(--amber); }
+.rcard__label { margin-top: auto; font: 800 0.66rem/1 var(--f-body); letter-spacing: 0.22em; text-transform: uppercase; color: var(--text-dim); }
+.rcard__points { font: 400 clamp(2.4rem, 5vw, 3.1rem)/1 var(--f-display); color: var(--lime); text-shadow: var(--glow-lime); }
+.rcard__points small { font-size: 0.4em; color: var(--cream); text-shadow: none; letter-spacing: 0.08em; }
+.rcard__deal { font-size: var(--fs-small); color: var(--cream); }
+.rcard__stripe { height: 6px; border-radius: 3px; background: repeating-linear-gradient(90deg, var(--red) 0 18px, transparent 18px 26px); opacity: 0.8; }
+.rcard__bar { height: 6px; border-radius: 3px; background: rgba(245, 239, 230, 0.12); overflow: hidden; }
+.rcard__bar span { display: block; height: 100%; background: var(--lime); box-shadow: var(--glow-lime); }
+.rcard__name { font: 800 0.72rem/1 var(--f-body); letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-dim); }
+.rcard--member { aspect-ratio: auto; transform: none; width: 100%; gap: 0.75rem; }
+.rcard--member .rcard__label { margin-top: var(--s-4); }
+.rcard__tip { font-size: 0.8rem; color: var(--text-faint); margin-top: var(--s-2); }
+.rcard--big { transform: rotate(-4deg); width: min(100%, 440px); }
+
+/* ---------- My account ---------- */
+.acct { padding: calc(var(--nav-h) + clamp(2.5rem, 6vw, 4.5rem)) 0 var(--section-y); min-height: 85vh; }
+.acct__loading { display: flex; gap: 0.7rem; align-items: center; color: var(--text-dim); padding: var(--s-8) 0; }
+.acct__loading svg { width: 22px; color: var(--amber); }
+.acct__head { display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: var(--s-5); margin-bottom: var(--s-7); }
+.acct__title { font-size: var(--fs-h2); line-height: var(--lh-display); margin-top: var(--s-3); }
+.acct__head-actions { display: flex; gap: var(--s-3); flex-wrap: wrap; }
+.acct__grid { display: grid; grid-template-columns: 360px minmax(0, 1fr); gap: var(--s-7); align-items: start; }
+.acct__grid > .rcard { position: sticky; top: calc(var(--nav-h) + 1.5rem); }
+.acct__main { display: grid; gap: var(--s-5); min-width: 0; }
+.acct__tabs { display: flex; gap: 0.35rem; padding: 0.35rem; border: 1px solid var(--line); border-radius: var(--r-pill); width: max-content; max-width: 100%; overflow-x: auto; scrollbar-width: none; }
+.acct__tab { padding: 0.65rem 1.2rem; border-radius: var(--r-pill); font: 800 0.75rem/1 var(--f-body); letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-dim); white-space: nowrap; transition: background 0.2s, color 0.2s; }
+.acct__tab:hover { color: var(--cream); }
+.acct__tab.is-on { background: var(--red); color: var(--white); }
+.acct__list { display: grid; border: 1px solid var(--line); border-radius: var(--r-2); overflow: hidden; }
+.acct__row { display: grid; grid-template-columns: auto 1fr auto auto 20px; gap: var(--s-4); align-items: center; padding: 1rem 1.2rem; border-bottom: 1px solid var(--line); background: var(--char-2); transition: background 0.2s; }
+.acct__row:last-child { border-bottom: 0; }
+a.acct__row:hover { background: var(--char-3); }
+.acct__row svg { width: 16px; color: var(--text-faint); }
+.acct__row--static { grid-template-columns: auto 1fr auto auto 0; }
+.acct__code { font: 800 0.8rem/1 var(--f-body); letter-spacing: 0.06em; }
+.acct__when { color: var(--text-dim); font-size: var(--fs-small); }
+.acct__total { font-weight: 800; }
+.acct__plus { color: var(--lime); }
+.acct__minus { color: #ff8a80; }
+.acct__empty { display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap; padding: var(--s-6); border: 1px dashed var(--line); border-radius: var(--r-2); color: var(--text-dim); }
+.acct__empty svg { width: 18px; color: var(--amber); }
+.acct__empty a { color: var(--cream); font-weight: 700; text-decoration: underline; }
+.acct__panel { display: grid; gap: var(--s-5); }
+.acct__rules { color: var(--text-dim); }
+.acct__rules b { color: var(--cream); }
+
+/* ---------- Rewards Club page ---------- */
+.rmath__inner { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: var(--s-8); align-items: center; }
+.rmath__title { font-size: var(--fs-h2); line-height: var(--lh-display); margin-bottom: var(--s-5); }
+.rmath__copy { display: grid; gap: var(--s-5); justify-items: start; }
+.rmath__list { display: grid; gap: 0.8rem; color: var(--text-dim); }
+.rmath__list li { position: relative; padding-left: 1.5rem; }
+.rmath__list li::before { content: ''; position: absolute; left: 0; top: 0.55em; width: 0.55rem; height: 0.55rem; border-radius: 50%; background: var(--red); }
+.rmath__small { font-size: var(--fs-small); color: var(--text-faint); }
+.rmath__small a { color: var(--text-dim); text-decoration: underline; }
+
+/* ---------- navbar account button ---------- */
+.acctbtn { flex: none; width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center; border: 1.5px solid rgba(245, 239, 230, 0.35); margin-right: 0.55rem; transition: border-color 0.25s, background 0.25s; }
+.acctbtn:hover { border-color: var(--red); background: rgba(218, 56, 51, 0.12); }
+.acctbtn.is-in { border-color: var(--lime); }
+.acctbtn__initial { font: 400 1.15rem/1 var(--f-display); color: var(--lime); }
+
+/* ---------- checkout points ---------- */
+.cpts { display: grid; gap: 0.5rem; padding: 0.9rem 1rem; border-radius: var(--r-2); border: 1px solid rgba(198, 255, 61, 0.3); background: rgba(198, 255, 61, 0.05); font-size: var(--fs-small); }
+.cpts__top { display: flex; justify-content: space-between; align-items: center; gap: var(--s-3); flex-wrap: wrap; }
+.cpts__top b { color: var(--lime); font-size: 1.05rem; }
+.cpts__top small { color: var(--text-dim); }
+.cpts__step { display: inline-flex; align-items: center; gap: 0.5rem; }
+.cpts__step button { width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--char-4); font-weight: 800; }
+.cpts__step button:hover:not(:disabled) { border-color: var(--lime); color: var(--lime); }
+.cpts__step button:disabled { opacity: 0.35; cursor: not-allowed; }
+.cpts__step span { min-width: 4.5rem; text-align: center; font-weight: 800; }
+.cpts__earn { color: var(--text-dim); }
+.cpts__earn b { color: var(--cream); }
+.cpts--guest { border-style: dashed; border-color: var(--line); background: none; color: var(--text-dim); display: block; }
+.cpts--guest a { color: var(--cream); font-weight: 700; text-decoration: underline; }
+.csum__row--off span:last-child { color: var(--lime); font-weight: 800; }
+.track__acct { color: var(--text-dim); font-size: var(--fs-small); }
+.track__acct a { color: var(--cream); font-weight: 700; text-decoration: underline; }
+
+@media (max-width: 1080px) { .acctbtn { margin-left: auto; } .cartbtn { margin-left: 0; } }
+@media (max-width: 960px) {
+  .auth__grid, .acct__grid, .rmath__inner { grid-template-columns: 1fr; gap: var(--s-7); }
+  .auth__aside { display: none; }
+  .acct__grid > .rcard { position: static; }
+}
+@media (max-width: 640px) {
+  .acct__row { grid-template-columns: 1fr auto; row-gap: 0.4rem; }
+  .acct__row > svg, .acct__row > span:empty { display: none; }
+  .acct__row--static { grid-template-columns: 1fr auto; }
+  .acctbtn { width: 42px; height: 42px; margin-right: 0.4rem; }
+}

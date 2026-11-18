@@ -1,0 +1,25 @@
+/* Tailwind 4: theme + utility classes only. No preflight reset — the BrewGrillz styles
+   (app/styles/*.css, imported in root.jsx) handle the base styles, so nothing shifts. */
+@layer theme, base, components, utilities;
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+
+/* Brand colours and fonts as Tailwind classes: bg-red, text-amber, font-display … */
+@theme {
+  --color-red: #da3833;
+  --color-red-hot: #ff4a3d;
+  --color-red-deep: #9e1f1b;
+  --color-char: #141110;
+  --color-char-2: #1d1918;
+  --color-char-3: #322d2b;
+  --color-char-4: #4a4340;
+  --color-cream: #f5efe6;
+  --color-paper: #efe4cf;
+  --color-ink: #1a1514;
+  --color-amber: #ffb238;
+  --color-lime: #c6ff3d;
+  --font-display: "Anton", "Impact", sans-serif;
+  --font-western: "Rye", "Georgia", serif;
+  --font-script: "Permanent Marker", "Comic Sans MS", cursive;
+  --font-body: "Manrope Variable", "Manrope", system-ui, sans-serif;
+}

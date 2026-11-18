@@ -1,0 +1,90 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: brewgrillz
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/brewgrillz
+      NODE_ENV: development
+      PAYMENT_PROVIDER: test
+      EMAIL_PROVIDER: file
+      WHATSAPP_PROVIDER: file
+      SITE_URL: http://localhost:4173
+      CORS_ORIGINS: http://localhost:4173,http://localhost:5173
+      ORDER_TOKEN_SECRET: ci-order-token-secret-0123456789abcdef
+      SESSION_SECRET: ci-session-secret-0123456789abcdefghij
+      JWT_SECRET: ci-jwt-secret-0123456789abcdefghijklmnop
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: |
+            backend/package-lock.json
+            frontend/package-lock.json
+
+      - name: Backend install
+        working-directory: backend
+        run: npm ci
+
+      - name: Backend lint
+        working-directory: backend
+        run: npm run lint
+
+      - name: Database migrations and menu
+        working-directory: backend
+        run: npx prisma migrate deploy && node prisma/seed.js
+
+      - name: Start API
+        working-directory: backend
+        run: |
+          nohup node src/server.js > ../api.log 2>&1 &
+          for attempt in $(seq 1 30); do
+            curl -sf http://localhost:4000/api/ping && exit 0
+            sleep 1
+          done
+          cat ../api.log
+          exit 1
+
+      - name: Frontend install
+        working-directory: frontend
+        run: npm ci
+
+      - name: Frontend lint
+        working-directory: frontend
+        run: npm run lint
+
+      - name: Frontend build (menu page must pre-render with dishes)
+        working-directory: frontend
+        env:
+          VITE_API_URL: http://localhost:4000/api
+          REQUIRE_MENU_PRERENDER: "true"
+        run: npm run build
+
+      - name: API tests
+        working-directory: qa
+        run: node --test --test-concurrency=1 api/*.test.mjs
+
+      - name: API log
+        if: failure()
+        run: cat api.log

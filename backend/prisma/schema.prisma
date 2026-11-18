@@ -1,0 +1,374 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  CUSTOMER
+  STAFF
+  ADMIN
+}
+
+enum PointsEntryType {
+  EARN
+  REDEEM
+  REVERSAL
+  ADJUSTMENT
+}
+
+enum MenuGroup {
+  FOOD
+  DRINKS
+}
+
+enum OrderStatus {
+  PENDING_PAYMENT
+  PLACED
+  PREPARING
+  READY
+  COMPLETED
+  CANCELLED
+  REFUNDED
+}
+
+// ---------- people ----------
+
+model User {
+  id            Int                  @id @default(autoincrement())
+  email         String               @unique
+  passwordHash  String
+  name          String
+  phone         String?
+  whatsappOptIn Boolean              @default(false)
+  role          Role                 @default(CUSTOMER)
+  isOwner       Boolean              @default(false)
+  // bumped to sign the person out everywhere (password reset, access change)
+  tokenVersion  Int                  @default(0)
+  orders        Order[]
+  reservations  Reservation[]
+  pointsLedger  PointsEntry[]
+  resetTokens   PasswordResetToken[]
+  appSessions   RefreshToken[]
+  createdAt     DateTime             @default(now())
+  updatedAt     DateTime             @updatedAt
+
+  @@index([role])
+}
+
+model PasswordResetToken {
+  id        Int       @id @default(autoincrement())
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  userId    Int
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime  @default(now())
+
+  @@index([userId])
+}
+
+// sign-ins for a future mobile app (JWT access token + rotating refresh token)
+model RefreshToken {
+  id           Int       @id @default(autoincrement())
+  tokenHash    String    @unique
+  familyId     String
+  tokenVersion Int
+  deviceName   String?
+  expiresAt    DateTime
+  lastUsedAt   DateTime?
+  replacedAt   DateTime?
+  revokedAt    DateTime?
+  userId       Int
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt    DateTime  @default(now())
+
+  @@index([userId])
+  @@index([familyId])
+  @@index([expiresAt])
+}
+
+// Rewards Club: every change to a member's points is one row (the balance is the sum)
+model PointsEntry {
+  id        Int             @id @default(autoincrement())
+  type      PointsEntryType
+  points    Int
+  note      String?
+  userId    Int
+  user      User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  orderId   Int?
+  order     Order?          @relation(fields: [orderId], references: [id])
+  addedBy   String?
+  createdAt DateTime        @default(now())
+
+  @@index([userId, createdAt])
+  @@index([orderId])
+}
+
+// ---------- menu ----------
+
+model Category {
+  id         Int            @id @default(autoincrement())
+  slug       String         @unique
+  name       String
+  group      MenuGroup
+  aliases    String[]
+  note       String?
+  // drinks in this category can be ordered online (food always can; alcohol never)
+  orderable  Boolean        @default(true)
+  sortOrder  Int            @default(0)
+  isActive   Boolean        @default(true)
+  items      MenuItem[]
+  sections   DrinkSection[]
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
+
+  @@index([isActive, sortOrder])
+}
+
+model MenuItem {
+  id            Int         @id @default(autoincrement())
+  slug          String      @unique
+  name          String
+  description   String
+  priceCents    Int
+  // [{ name, priceCents }]
+  variants      Json?
+  // [{ name, choices: [] }] — customer must pick one of each
+  options       Json?
+  tags          String[]
+  image         String?
+  isAvailable   Boolean     @default(true)
+  isActive      Boolean     @default(true)
+  staffEditedAt DateTime?
+  sortOrder     Int         @default(0)
+  categoryId    Int
+  category      Category    @relation(fields: [categoryId], references: [id])
+  orderItems    OrderItem[]
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@index([categoryId, sortOrder])
+}
+
+model DrinkSection {
+  id         Int      @id @default(autoincrement())
+  slug       String
+  title      String
+  sub        String?
+  cols       String[]
+  sortOrder  Int      @default(0)
+  isActive   Boolean  @default(true)
+  categoryId Int
+  category   Category @relation(fields: [categoryId], references: [id])
+  drinks     Drink[]
+
+  @@unique([categoryId, slug])
+}
+
+model Drink {
+  id            Int          @id @default(autoincrement())
+  slug          String       @unique
+  name          String
+  info          String?
+  // one price per column, in cents; null where a size isn't sold
+  prices        Json
+  isAvailable   Boolean      @default(true)
+  isActive      Boolean      @default(true)
+  staffEditedAt DateTime?
+  sortOrder     Int          @default(0)
+  sectionId     Int
+  section       DrinkSection @relation(fields: [sectionId], references: [id])
+  orderItems    OrderItem[]
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  @@index([sectionId, sortOrder])
+}
+
+// ---------- orders ----------
+
+model Order {
+  id                Int          @id @default(autoincrement())
+  code              String       @unique
+  idempotencyKey    String       @unique
+  status            OrderStatus  @default(PENDING_PAYMENT)
+  customerName      String
+  customerEmail     String
+  customerPhone     String
+  whatsappOptIn     Boolean      @default(false)
+  scheduledFor      DateTime
+  notes             String?
+  subtotalCents     Int
+  discountCents     Int          @default(0)
+  pointsRedeemed    Int          @default(0)
+  totalCents        Int
+  refundedCents     Int          @default(0)
+  paymentProvider   String?
+  providerOrderId   String?      @unique
+  providerPaymentId String?
+  paidAt            DateTime?
+  userId            Int?
+  user              User?        @relation(fields: [userId], references: [id])
+  points            PointsEntry[]
+  items             OrderItem[]
+  events            OrderEvent[]
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+
+  @@index([status, createdAt])
+  @@index([scheduledFor])
+  @@index([providerPaymentId])
+  @@index([customerEmail])
+  @@index([userId, createdAt])
+}
+
+model OrderItem {
+  id             Int       @id @default(autoincrement())
+  quantity       Int
+  nameSnapshot   String
+  variant        String?
+  options        Json?
+  notes          String?
+  unitPriceCents Int
+  lineTotalCents Int
+  orderId        Int
+  order          Order     @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  menuItemId     Int?
+  menuItem       MenuItem? @relation(fields: [menuItemId], references: [id])
+  drinkId        Int?
+  drink          Drink?    @relation(fields: [drinkId], references: [id])
+
+  @@index([orderId])
+}
+
+// status timeline shown on the tracking page
+model OrderEvent {
+  id        Int         @id @default(autoincrement())
+  status    OrderStatus
+  note      String?
+  orderId   Int
+  order     Order       @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  createdAt DateTime    @default(now())
+
+  @@index([orderId, createdAt])
+}
+
+// ---------- table bookings ----------
+
+enum ReservationStatus {
+  REQUESTED
+  CONFIRMED
+  DECLINED
+  CANCELLED
+  COMPLETED
+  NO_SHOW
+}
+
+model Reservation {
+  id              Int               @id @default(autoincrement())
+  code            String            @unique
+  idempotencyKey  String            @unique
+  status          ReservationStatus @default(REQUESTED)
+  name            String
+  email           String
+  phone           String
+  whatsappOptIn   Boolean           @default(false)
+  partySize       Int
+  startsAt        DateTime
+  // the table is held until this time (startsAt + BOOKING_MINUTES)
+  endsAt          DateTime
+  occasion        String?
+  notes           String?
+  tableLabel      String?
+  staffNote       String?
+  termsAcceptedAt DateTime
+  confirmedAt     DateTime?
+  closedAt        DateTime?
+  userId          Int?
+  user            User?             @relation(fields: [userId], references: [id])
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+
+  @@index([userId, startsAt])
+  @@index([startsAt])
+  @@index([status, startsAt])
+  @@index([email])
+  @@index([phone])
+}
+
+// ---------- events and parties ----------
+
+enum EnquiryStatus {
+  NEW
+  CONTACTED
+  CONFIRMED
+  DECLINED
+  CLOSED
+}
+
+model EventEnquiry {
+  id              Int           @id @default(autoincrement())
+  code            String        @unique
+  status          EnquiryStatus @default(NEW)
+  occasion        String
+  eventDate       String
+  startTime       String
+  guests          Int
+  wholeVenue      Boolean       @default(false)
+  budget          String?
+  name            String
+  email           String
+  phone           String
+  message         String?
+  staffNote       String?
+  termsAcceptedAt DateTime
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@index([status, createdAt])
+}
+
+// ---------- operations ----------
+
+model EmailOutbox {
+  id            Int      @id @default(autoincrement())
+  to            String[]
+  subject       String
+  html          String
+  attempts      Int      @default(0)
+  lastError     String?
+  nextAttemptAt DateTime
+  createdAt     DateTime @default(now())
+
+  @@index([nextAttemptAt])
+}
+
+model AppSetting {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
+}
+
+model WhatsAppLog {
+  id          Int      @id @default(autoincrement())
+  to          String
+  kind        String
+  waMessageId String?
+  ok          Boolean
+  error       String?
+  createdAt   DateTime @default(now())
+
+  @@index([createdAt])
+}
+
+// ---------- marketing ----------
+
+model NewsletterSubscriber {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  source    String?
+  createdAt DateTime @default(now())
+}

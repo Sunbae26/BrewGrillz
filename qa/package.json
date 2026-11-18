@@ -1,0 +1,8 @@
+{
+  "name": "brewgrillz-qa",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test:api": "node --test --test-concurrency=1 api/*.test.mjs"
+  }
+}
