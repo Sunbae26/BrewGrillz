@@ -22,6 +22,8 @@ async function swipeUp(page) {
 async function expectScrolls(page, where) {
   expect(await page.evaluate(() => document.body.style.overflow), `${where}: page left locked`).not.toBe("hidden");
   expect(await swipeUp(page), `${where}: swiping doesn't move the page`).toBeGreaterThan(100);
+  const nav = await page.locator(".nav").boundingBox();
+  expect(nav?.y ?? -1, `${where}: the navbar should stay on screen while scrolling`).toBeGreaterThanOrEqual(0);
   // back to the top, like a person reaching for the menu again (the navbar slides back in)
   await page.evaluate(() => window.scrollTo(0, 0));
   await page.waitForTimeout(400);
@@ -107,4 +109,12 @@ test("E2E-MOB-05 every page keeps its text inside the screen with side margins",
     if (tight.length) problems.push(`${path}: ${tight.join(", ")}`);
   }
   expect(problems).toEqual([]);
+});
+
+test("E2E-MOB-06 phone navbar: account, cart and menu buttons are evenly spaced", async ({ page }) => {
+  await page.goto("/");
+  const [a, c, m] = await Promise.all([".acctbtn", ".cartbtn", ".burger"].map((s) => page.locator(s).boundingBox()));
+  const gap1 = c.x - (a.x + a.width);
+  const gap2 = m.x - (c.x + c.width);
+  expect(Math.abs(gap1 - gap2), `gaps ${gap1}px and ${gap2}px`).toBeLessThanOrEqual(2);
 });

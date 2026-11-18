@@ -82,7 +82,6 @@
   border-bottom: 1px solid transparent;
 }
 .nav--solid { background: rgba(20, 17, 16, 0.94); border-color: var(--line); }
-.nav--hidden { transform: translateY(-110%); }
 .nav__inner { height: 100%; max-width: 1600px; margin: 0 auto; padding-inline: var(--gutter); display: flex; align-items: center; gap: var(--s-6); }
 .nav__logo img { width: clamp(140px, 13vw, 190px); height: auto; }
 .nav__links { display: flex; gap: clamp(1rem, 2.2vw, 2.2rem); margin-left: auto; }

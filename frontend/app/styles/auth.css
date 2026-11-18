@@ -118,7 +118,8 @@ a.acct__row:hover { background: var(--char-3); }
 
 /* account + cart sit together as one group */
 .nav__icons { display: flex; align-items: center; gap: 0.6rem; flex: none; }
-@media (max-width: 1080px) { .nav__icons { margin-left: auto; } .nav__icons .cartbtn { margin-left: 0; } }
+/* phones and tablets: account, cart and the menu button sit together as one evenly spaced group */
+@media (max-width: 1080px) { .nav__inner { gap: 0.6rem; } .nav__icons { margin-left: auto; } .nav__icons .cartbtn { margin-left: 0; } .burger { margin-left: 0 !important; } }
 @media (max-width: 960px) {
   .auth__grid, .acct__grid, .rmath__inner { grid-template-columns: 1fr; gap: var(--s-7); }
   .auth__aside { display: none; }
@@ -130,6 +131,7 @@ a.acct__row:hover { background: var(--char-3); }
   .acct__row--static { grid-template-columns: 1fr auto; }
   .acctbtn { width: 42px; height: 42px; }
   .nav__icons { gap: 0.45rem; }
+  .nav__inner { gap: 0.45rem; }
 }
 
 /* autofill inside our form fields (beats the .field focus style, keeps the dark look) */

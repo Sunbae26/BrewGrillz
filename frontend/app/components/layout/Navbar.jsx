@@ -11,7 +11,6 @@ import { isStaff } from '../../lib/admin.js'
 
 export default function Navbar() {
   const [solid, setSolid] = useState(false)
-  const [hidden, setHidden] = useState(false)
   const [open, setOpen] = useState(false)
   const menuRef = useRef(null)
   const lenis = useLenis()
@@ -20,15 +19,9 @@ export default function Navbar() {
   const { user } = useAuth()
   const account = user ? { to: isStaff(user) ? '/admin' : '/account', label: isStaff(user) ? 'Dashboard' : 'My account' } : { to: '/login', label: 'Sign in' }
 
+  // The navbar always stays on screen; it only gets a solid background once you scroll.
   useEffect(() => {
-    let last = window.scrollY
-    const onScroll = () => {
-      const y = window.scrollY
-      setSolid(y > 40)
-      setHidden(y > 300 && y > last + 2)
-      if (y < last - 2) setHidden(false)
-      last = y
-    }
+    const onScroll = () => setSolid(window.scrollY > 40)
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
@@ -54,7 +47,7 @@ export default function Navbar() {
 
   return (
     <>
-      <header className={`nav ${solid ? 'nav--solid' : ''} ${hidden && !open ? 'nav--hidden' : ''} ${open ? 'nav--open' : ''}`}>
+      <header className={`nav ${solid ? 'nav--solid' : ''} ${open ? 'nav--open' : ''}`}>
         <div className="nav__inner">
           <MoCoLink to="/" className="nav__logo" aria-label="BrewGrillz home">
             <img src="/brand/logo-nav.webp" alt="BrewGrillz Singapore" width="190" height="59" />
