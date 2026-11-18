@@ -68,6 +68,7 @@ export default function Navbar() {
             <Button to="/reserve" variant="ghost" size="sm">Book a table</Button>
             <Button to="/menu" variant="primary" size="sm">Order online</Button>
           </div>
+          <div className="nav__icons">
           <MoCoLink to={account.to} className={`acctbtn ${user ? 'is-in' : ''}`} aria-label={account.label} data-cursor="hover">
             {user ? (
               <span className="acctbtn__initial" aria-hidden="true">{user.name.trim().charAt(0).toUpperCase()}</span>
@@ -79,6 +80,7 @@ export default function Navbar() {
             <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" aria-hidden="true"><path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8L5 8Z" /><path d="M9 8V6a3 3 0 0 1 6 0v2" /></svg>
             {ready && count > 0 && <span className="cartbtn__n">{count}</span>}
           </button>
+          </div>
           <button className={`burger ${open ? 'is-open' : ''}`} onClick={() => setOpen((o) => !o)} aria-label="Menu" aria-expanded={open}>
             <span /><span />
           </button>
