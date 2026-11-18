@@ -119,7 +119,7 @@
 .footer { position: relative; background: #0d0b0a; padding-top: var(--s-9); overflow: hidden; border-top: 1px solid var(--line); }
 .footer__grid { display: grid; grid-template-columns: 1.1fr 0.8fr 1fr 1.4fr; gap: var(--s-7); }
 .footer__brand img { width: 150px; }
-.footer__tag { color: var(--red); font-size: 1.25rem; margin-top: var(--s-4); transform: rotate(-3deg); }
+.footer__tag { color: var(--red-text); font-size: 1.25rem; margin-top: var(--s-4); transform: rotate(-3deg); }
 .footer__h { font: 800 0.72rem/1 var(--f-body); letter-spacing: 0.24em; text-transform: uppercase; color: var(--text-faint); margin-bottom: var(--s-5); }
 .footer__list { display: grid; gap: 0.6rem; font-style: normal; color: var(--text-dim); }
 .footer__list a:hover { color: var(--red); }
@@ -128,7 +128,7 @@
 .footer__socials a:hover { color: var(--lime); }
 .footer__mega { display: flex; justify-content: center; font-size: clamp(5rem, 21vw, 22rem); line-height: 0.92; text-align: center; margin-top: var(--s-8); padding-bottom: 0.08em; user-select: none; white-space: nowrap; }
 /* outlined neon tubes, full width — lit with a glow (drop-shadow follows the outline) */
-.mega-neon { color: transparent; -webkit-text-stroke: 2px currentColor; }
+.mega-neon { pointer-events: none; color: transparent; -webkit-text-stroke: 2px currentColor; }
 .mega-neon--white { -webkit-text-stroke-color: #fff; filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.9)) drop-shadow(0 0 18px rgba(255, 220, 200, 0.45)); }
 .mega-neon--red { -webkit-text-stroke-color: #ff6a5e; filter: drop-shadow(0 0 4px rgba(255, 74, 61, 0.95)) drop-shadow(0 0 20px rgba(218, 56, 51, 0.6)); }
 .footer__bottom { display: flex; justify-content: space-between; gap: var(--s-4); flex-wrap: wrap; padding-block: var(--s-5); font-size: var(--fs-micro); color: var(--text-faint); border-top: 1px solid var(--line); }

@@ -5,11 +5,15 @@ import { safeNext, useAuth } from "../lib/auth.jsx";
 import { AuthLink, AuthShell, FormAlert, TextField } from "../components/auth/AuthShell";
 import { Button, Arrow } from "../components/ui/ui";
 import MoCoLink from "../motion/MoCoLink";
+import { seo } from "../lib/seo.js";
 
-export const meta = () => [
-  { title: "Join the Rewards Club | BrewGrillz Singapore" },
-  { name: "description", content: "Create a free BrewGrillz account: earn points on pickup orders and dine-in bills, and get money off." },
-];
+export const meta = () =>
+  seo({
+    title: "Join the Rewards Club | BrewGrillz Singapore",
+    description: "Create a free BrewGrillz account: earn points on pickup orders and dine-in bills, and get money off.",
+    path: "/register",
+    noIndex: true,
+  });
 
 export default function Register() {
   const navigate = useNavigate();

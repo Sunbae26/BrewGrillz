@@ -56,9 +56,11 @@ export default function AdminLayout() {
             <span className="eyebrow">BrewGrillz dashboard</span>
             <p className="adm__who">{user.name} · {user.isOwner ? "Owner" : user.role === "ADMIN" ? "Admin" : "Staff"}</p>
           </div>
-          {summary?.ordersPaused && <span className="adm__paused">Online orders paused</span>}
-          <a href="/" className="abtn abtn--ghost">View website</a>
-          <button type="button" className="abtn abtn--ghost" onClick={async () => { await signOut(); navigate("/admin/login"); }}>Sign out</button>
+          <div className="adm__actions">
+            {summary?.ordersPaused && <span className="adm__paused">Online orders paused</span>}
+            <a href="/" className="abtn abtn--ghost">View website</a>
+            <button type="button" className="abtn abtn--ghost" onClick={async () => { await signOut(); navigate("/admin/login", { replace: true }); }}>Sign out</button>
+          </div>
         </header>
         <nav className="adm__tabs" aria-label="Dashboard">
           {tabs.map(([to, label, badge]) => (

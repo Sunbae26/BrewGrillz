@@ -8,6 +8,7 @@ import Marquee from "../components/layout/Marquee";
 import { Button, Arrow, SectionHead } from "../components/ui/ui";
 import { taps, cocktails } from "../config/home";
 import MoCoLink from "../motion/MoCoLink";
+import { seo } from "../lib/seo.js";
 
 /* THE BAR — house taps, then every drink from the menu (from the API), all dine-in. */
 
@@ -15,10 +16,12 @@ export async function loader() {
   return { menu: await loadOrNull("/menu") };
 }
 
-export const meta = () => [
-  { title: "The Bar | BrewGrillz Singapore — Brewerkz Craft Beer, Cocktails & Wine in Bugis" },
-  { name: "description", content: "Three house beers brewed by Brewerkz for BrewGrillz, buckets of five, cocktails, wines and spirits at 163 Rochor Road, Bugis." },
-];
+export const meta = () =>
+  seo({
+    title: "The Bar | BrewGrillz Singapore — Brewerkz Craft Beer, Cocktails & Wine in Bugis",
+    description: "Three house beers brewed by Brewerkz for BrewGrillz, buckets of five, cocktails, wines and spirits at 163 Rochor Road, Bugis.",
+    path: "/bar",
+  });
 
 const price = (n) => (n == null ? "—" : `$${Number.isInteger(n) ? n : n.toFixed(1)}`);
 

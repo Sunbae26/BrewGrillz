@@ -1,8 +1,10 @@
 import { useState } from "react";
+import { useOutletContext } from "react-router";
+import { isAdmin } from "../../lib/admin.js";
 import { useQuery } from "@tanstack/react-query";
 import { apiGet } from "../../lib/api.js";
 import { cents } from "../../lib/format.js";
-import { ABtn, Empty, ErrorNote, Loading, PageHead } from "../../components/admin/Admin";
+import { ABtn, AdminOnly, Empty, ErrorNote, Loading, PageHead } from "../../components/admin/Admin";
 
 /* REPORTS — paid pickup orders, bookings and new Rewards members for today, 7 or 30 days. */
 
@@ -13,6 +15,12 @@ const RANGES = [
 ];
 
 export default function AdminReports() {
+  const { user } = useOutletContext();
+  if (!isAdmin(user)) return <AdminOnly title="Reports" />;
+  return <Reports />;
+}
+
+function Reports() {
   const [days, setDays] = useState(7);
   const report = useQuery({ queryKey: ["admin", "reports", days], queryFn: ({ signal }) => apiGet(`/admin/reports?days=${days}`, { signal }) });
   const r = report.data;

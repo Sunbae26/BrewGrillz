@@ -10,3 +10,6 @@ build
 backend/tmp
 qa/test-results
 qa/playwright-report
+
+# launch secrets (never commit)
+launch/filled/

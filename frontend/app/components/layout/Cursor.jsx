@@ -17,10 +17,11 @@ export default function Cursor() {
     const over = (e) => {
       const t = e.target.closest('[data-cursor-label], a, button, [data-cursor]')
       const r = ring.current
+      if (!r) return
       r.classList.remove('is-hover', 'is-label')
       if (!t) return
       if (t.dataset.cursorLabel) {
-        label.current.textContent = t.dataset.cursorLabel
+        if (label.current) label.current.textContent = t.dataset.cursorLabel
         r.classList.add('is-label')
       } else r.classList.add('is-hover')
     }
@@ -29,6 +30,8 @@ export default function Cursor() {
     return () => {
       window.removeEventListener('pointermove', move)
       window.removeEventListener('pointerover', over)
+      // leaving the site shell (e.g. into the staff dashboard): give the normal mouse pointer back
+      document.body.classList.remove('has-cursor')
     }
   }, [])
 

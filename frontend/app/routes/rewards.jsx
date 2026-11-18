@@ -4,13 +4,16 @@ import { useAuth } from "../lib/auth.jsx";
 import PageHero from "../components/ui/PageHero";
 import { Button, Arrow, SectionHead, Flame } from "../components/ui/ui";
 import MoCoLink from "../motion/MoCoLink";
+import { seo } from "../lib/seo.js";
 
 /* REWARDS CLUB — how points work, with a join / sign-in call to action. */
 
-export const meta = () => [
-  { title: "Rewards Club | BrewGrillz Singapore — Earn Points on Every Bill" },
-  { name: "description", content: "Join the BrewGrillz Rewards Club free: 1 point for every S$1 on pickup orders and dine-in bills, 100 points = S$5 off." },
-];
+export const meta = () =>
+  seo({
+    title: "Rewards Club | BrewGrillz Singapore — Earn Points on Every Bill",
+    description: "Join the BrewGrillz Rewards Club free: 1 point for every S$1 on pickup orders and dine-in bills, 100 points = S$5 off.",
+    path: "/rewards",
+  });
 
 const STEPS = [
   { n: "01", title: "Join free", text: "Create an account in under a minute. Just your name, email and a password." },

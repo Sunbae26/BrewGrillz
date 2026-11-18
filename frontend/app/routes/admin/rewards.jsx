@@ -22,7 +22,7 @@ export default function AdminRewards() {
     <>
       <PageHead title="Rewards" />
       <form className="adm__search" onSubmit={(e) => { e.preventDefault(); setQ(term.trim()); setOpen(null); }}>
-        <input className="adm__input" type="search" placeholder="Member’s name, email or mobile" value={term} onChange={(e) => setTerm(e.target.value)} />
+        <input className="adm__input" type="search" aria-label="Find a member" placeholder="Member’s name, email or mobile" value={term} onChange={(e) => setTerm(e.target.value)} />
         <ABtn tone="primary" type="submit" disabled={term.trim().length < 2}>Find member</ABtn>
       </form>
       <p className="adm__hint">Dine-in: enter the bill total (before points) and the system adds 1 point per S$1. {isAdmin(user) ? "As an admin you can also correct points directly." : ""}</p>
@@ -75,8 +75,8 @@ function AddPoints({ member, admin, q, onDone }) {
         </div>
       )}
       <div className="apoints__row">
-        <input className="adm__input" inputMode="decimal" required placeholder={mode === "bill" ? "Bill total, e.g. 86.40" : "Points, e.g. 20 or -20"} value={value} onChange={(e) => setValue(e.target.value)} />
-        <input className="adm__input" placeholder="Note (optional), e.g. table 7" value={note} onChange={(e) => setNote(e.target.value)} />
+        <input className="adm__input" inputMode="decimal" required aria-label={mode === "bill" ? "Bill total" : "Points"} placeholder={mode === "bill" ? "Bill total, e.g. 86.40" : "Points, e.g. 20 or -20"} value={value} onChange={(e) => setValue(e.target.value)} />
+        <input className="adm__input" aria-label="Note" placeholder="Note (optional), e.g. table 7" value={note} onChange={(e) => setNote(e.target.value)} />
         <ABtn tone="primary" type="submit" disabled={action.isPending || !value}>{mode === "bill" ? "Add points" : "Save"}</ABtn>
         <ABtn onClick={onDone}>Close</ABtn>
       </div>

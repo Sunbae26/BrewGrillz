@@ -56,7 +56,7 @@ export default function Marquee({ items, direction = 1, speed = 40, className = 
     ])
 
   return (
-    <div className={`marquee ${className}`} ref={root} aria-label={items.join(', ')}>
+    <div className={`marquee ${className}`} ref={root} role="marquee" aria-label={items.join(', ')}>
       <div className="marquee__track" ref={track} aria-hidden="true">
         {row('a')}
         {row('b')}

@@ -8,13 +8,16 @@ import { Button, Arrow, Flame, Food, Sticker, SectionHead } from "../components/
 import MoCoLink from "../motion/MoCoLink";
 import { img } from "../config/home";
 import { site } from "../config/site";
+import { seo } from "../lib/seo.js";
 
 /* EVENTS & PARTIES — what we host, how it works, and an enquiry form (nothing is charged until confirmed). */
 
-export const meta = () => [
-  { title: "Events & Parties | BrewGrillz Singapore — Birthdays, Office Parties in Bugis" },
-  { name: "description", content: "Celebrate at BrewGrillz, 163 Rochor Road, Bugis: birthdays, office parties, farewells and watch parties with sharing platters, Brewerkz craft beer and cocktails. Send an enquiry and we'll plan it with you." },
-];
+export const meta = () =>
+  seo({
+    title: "Events & Parties | BrewGrillz Singapore — Birthdays, Office Parties in Bugis",
+    description: "Celebrate at BrewGrillz, 163 Rochor Road, Bugis: birthdays, office parties, farewells and watch parties with sharing platters, Brewerkz craft beer and cocktails. Send an enquiry and we'll plan it with you.",
+    path: "/events",
+  });
 
 const OCCASIONS = [
   { name: "Birthday", line: "Cake on us? Ask. Candles, playlists and a platter with your name on it.", image: img("mixed-grill-platter"), sticker: "Party!" },

@@ -23,7 +23,7 @@ export default function Vibes() {
           <button type="button" onClick={() => nudge(1)} aria-label="Next">→</button>
         </div>
       </div>
-      <div className="vibes__track" ref={track}>
+      <div className="vibes__track" ref={track} tabIndex={0} role="region" aria-label="Photos of BrewGrillz (scroll sideways)">
         {vibes.map((v, i) =>
           v.type === 'img' ? (
             <figure key={i} className={`vibe vibe--img vibe--${i % 3}`}>

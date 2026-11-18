@@ -92,3 +92,17 @@ body.has-cursor .cursor, body.has-cursor .cursor-ring { opacity: 1; }
   .grain { animation: none; }
   *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
 }
+
+/* Browser autofill (Chrome/Safari suggestions) keeps our dark fields instead of turning them white */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+  -webkit-text-fill-color: var(--cream);
+  caret-color: var(--cream);
+  -webkit-box-shadow: 0 0 0 1000px var(--char-2) inset;
+  box-shadow: 0 0 0 1000px var(--char-2) inset;
+  transition: background-color 9999s ease-out 0s;
+}
+input:-webkit-autofill:focus { -webkit-box-shadow: 0 0 0 1000px var(--char-2) inset, 0 0 0 4px rgba(218, 56, 51, 0.18); }

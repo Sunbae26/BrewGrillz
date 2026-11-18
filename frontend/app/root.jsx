@@ -27,9 +27,15 @@ import Cursor from "./components/layout/Cursor";
 import CartDrawer from "./components/cart/CartDrawer";
 import { Flame } from "./components/ui/ui";
 import { API_ORIGIN } from "./lib/api.js";
+// The two fonts every page shows first (headings and body text), fetched straight away instead of
+// after the stylesheet: the headings appear sooner and nothing jumps when the font arrives.
+import antonFont from "@fontsource/anton/files/anton-latin-400-normal.woff2?url";
+import manropeFont from "@fontsource-variable/manrope/files/manrope-latin-wght-normal.woff2?url";
 
 export const links = () => [
   { rel: "icon", type: "image/png", href: "/brand/favicon.png" },
+  { rel: "preload", href: antonFont, as: "font", type: "font/woff2", crossOrigin: "anonymous" },
+  { rel: "preload", href: manropeFont, as: "font", type: "font/woff2", crossOrigin: "anonymous" },
   ...(import.meta.env.PROD && API_ORIGIN ? [{ rel: "preconnect", href: API_ORIGIN, crossOrigin: "use-credentials" }] : []),
 ];
 

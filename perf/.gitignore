@@ -1,0 +1,4 @@
+node_modules
+lighthouse/results
+*.log
+k6/results*.json

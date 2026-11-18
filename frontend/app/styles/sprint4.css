@@ -38,7 +38,7 @@
 .ribbon__day b { font: 400 1.7rem/1 var(--f-display); }
 .ribbon__day:hover:not(:disabled) { border-color: var(--char-4); transform: translateY(-2px); }
 .ribbon__day.is-on { background: var(--red); border-color: var(--red); box-shadow: var(--glow-red); }
-.ribbon__day.is-on span { color: rgba(255, 255, 255, 0.85); }
+.ribbon__day.is-on span { color: var(--white); }
 .ribbon__day:disabled { opacity: 0.35; cursor: not-allowed; }
 .ribbon__day--ghost { height: 84px; background: var(--char-2); border-color: transparent; animation: pulseGhost 1.4s infinite; }
 

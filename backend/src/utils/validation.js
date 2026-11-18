@@ -10,7 +10,7 @@ export const SG_PHONE_MESSAGE =
 
 export function normalizeSgPhone(value) {
   const raw = String(value ?? "").trim();
-  if (!/^\+?[\d ]+$/.test(raw)) return null;
+  if (!/^\+?[\d -]+$/.test(raw)) return null;
   let digits = raw.replace(/\D/g, "");
   if (raw.startsWith("+") && !digits.startsWith("65")) return null;
   if (digits.length === 10 && digits.startsWith("65")) digits = digits.slice(2);

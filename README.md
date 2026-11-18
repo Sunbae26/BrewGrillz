@@ -6,7 +6,9 @@ Full-stack website for BrewGrillz, Finest Grill Dining & Bar, 163 Rochor Road, B
 | --- | --- |
 | `frontend` | React 19, React Router 7 (pre-rendered pages), Vite, Tailwind CSS 4, TanStack Query, GSAP |
 | `backend` | Node.js 22, Express 5, Prisma 7, PostgreSQL (Neon) |
-| `qa` | API tests (more tests, speed and load testing in Sprint 6) |
+| `qa` | API tests and browser tests (Playwright, axe) |
+| `perf` | Page speed (Lighthouse) and load tests (k6) |
+| `launch` | Go-live scripts and checklist |
 
 ## Requirements
 
@@ -168,6 +170,20 @@ All settings are in `backend/.env` (`TOTAL_TABLES`, `BOOKING_*`, `RESERVATION_*`
 - **Errors** never show internal details to customers; each failed request has a request id in the log.
 - **Secrets** go only into the Render and Vercel dashboards, never into Git or any `VITE_` variable.
 
+## SEO
+
+- Every public page sets its title, description, canonical link, and Open Graph and X sharing tags through `frontend/app/lib/seo.js`. The sharing image is `frontend/public/og-image.jpg` (1200×630).
+- The home page carries Google's restaurant details (address, hours, phone, menu, order and booking links) as JSON-LD.
+- Checkout, track, sign-in, account, order, booking and dashboard pages are `noindex`. The build writes `sitemap.xml` and `robots.txt`.
+- The live address comes from `VITE_SITE_URL` (default `https://www.brewgrillz.sg`).
+
+## Tests, speed and load (like Ruchi)
+
+- `qa/`: 58 API tests and 37 browser tests (orders, payments, bookings, accounts, Rewards, dashboard, security, double clicks and overbooking, input checks, 8 screen sizes, accessibility, SEO, emails). How to run: `qa/README.md`. Results: `qa/REPORT.md`.
+- `perf/`: Lighthouse page speed and k6 load tests (a busy dinner rush, and a stress test to find the limit). How to run and the results: `perf/README.md`.
+
+Never run these against the live site.
+
 ## Production build
 
 ```bash
@@ -177,15 +193,15 @@ cd backend && npm run build && npm run db:deploy
 
 `npm run preview` serves the built site like production hosting (`/menu` serves the pre-rendered page, order pages fall back to the app shell, unknown addresses get the 404 page). Always test with this, not `vite preview`.
 
-## Deployment (not yet: after the whole site is built and tested)
+## Deployment
 
-Same setup as Ruchi, all in Singapore: Vercel for the website (root directory `frontend`, output `build/client`), Render for the API (root directory `backend`, see `render.yaml`, health check `/api/ping`, one always-on instance), Neon for the database, Cloudflare in front. The full go-live checklist arrives with Sprint 6.
+Same setup as Ruchi, all in Singapore: Vercel for the website (root directory `frontend`, output `build/client`), Render for the API (root directory `backend`, see `render.yaml`, health check `/api/ping`, one always-on instance), Neon for the database. **Step-by-step for staging and live: `launch/README.md`** (`node launch/prepare.mjs brewgrillz.sg`, then `node launch/check.mjs`, then `bash launch/health.sh brewgrillz.sg` after the domain is pointed).
 
 On Vercel set `VITE_API_URL=/api` (proxied by `vercel.json`, update the destination to your Render address), `BUILD_API_URL` to the API's full address, and `VITE_SITE_URL`. On Vercel production builds the build stops if the menu can't be loaded from the API, so an empty menu page is never published.
 
 ## Checks on every push
 
-`.github/workflows/ci.yml` runs on every push to `main`: clean installs, lint, database migrations and menu on a throwaway PostgreSQL, a strict frontend build (the menu page must pre-render with dishes) and the API tests in `qa/api`, including Stripe payments against a fake Stripe.
+`.github/workflows/ci.yml` runs on every push to `main`: clean installs, lint, database migrations and menu on a throwaway PostgreSQL, a strict frontend build (the menu page must pre-render with dishes) and the API tests in `qa/api` (including Stripe payments against a fake Stripe), then the browser tests in `qa/e2e` on desktop and phone.
 
 ## API
 
@@ -229,4 +245,6 @@ On Vercel set `VITE_API_URL=/api` (proxied by `vercel.json`, update the destinat
 - ✅ Sprint 3 — Neon database, cart, pickup checkout, Stripe, email and WhatsApp notifications, order tracking, restructured into `frontend` and `backend` like Ruchi
 - ✅ Sprint 4 — table bookings, events and party enquiries, Bar, Our Place, privacy and terms; Track your order like Ruchi, neon map, cart delete buttons, menu links fixed
 - ✅ Sprint 5 — Rewards Club, customer accounts, owner set-up once, staff sign-in, staff dashboard (orders, bookings, events, menu, rewards, settings, team, reports)
-- Sprint 6 — polish, SEO, full QA, speed and load tests, launch
+- ✅ Sprint 6 — SEO (sharing image, Google restaurant details), full QA (58 API + 37 browser tests, 10 bugs fixed), Lighthouse and k6 load tests (server limit 5× higher), `perf` and `launch` folders
+
+Next: staging, testing on staging, then live (`launch/README.md`).

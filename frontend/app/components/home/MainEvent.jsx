@@ -135,7 +135,7 @@ export default function MainEvent() {
                   type="button"
                   role="tab"
                   aria-selected={i === index}
-                  aria-label={d.name}
+                  aria-label={`0${i + 1} ${d.name}`}
                   className={`me__tick ${i === index ? 'is-on' : ''}`}
                   onClick={() => go(i)}
                 >

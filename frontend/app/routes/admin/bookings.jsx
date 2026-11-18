@@ -29,7 +29,7 @@ export default function AdminBookings() {
     <>
       <PageHead title="Bookings">
         <ABtn onClick={() => setDate(shift(date, -1))} aria-label="Previous day">←</ABtn>
-        <input type="date" className="adm__input" value={date} onChange={(e) => e.target.value && setDate(e.target.value)} />
+        <input type="date" aria-label="Day" className="adm__input" value={date} onChange={(e) => e.target.value && setDate(e.target.value)} />
         <ABtn onClick={() => setDate(shift(date, 1))} aria-label="Next day">→</ABtn>
         <ABtn onClick={() => setDate(todaySG())}>Today</ABtn>
       </PageHead>
@@ -57,7 +57,7 @@ export default function AdminBookings() {
                     <div className="acard__actions">
                       {b.status === "REQUESTED" && (
                         <>
-                          <input className="adm__input adm__input--sm" placeholder="Table" value={tables[b.code] ?? ""} onChange={(e) => setTables({ ...tables, [b.code]: e.target.value })} />
+                          <input className="adm__input adm__input--sm" aria-label={`Table for ${b.name}`} placeholder="Table" value={tables[b.code] ?? ""} onChange={(e) => setTables({ ...tables, [b.code]: e.target.value })} />
                           <ABtn tone="primary" disabled={action.isPending} onClick={() => run(b.code, "confirm", tables[b.code] ? { table: tables[b.code] } : {})}>Confirm</ABtn>
                           <TwoTap label="Decline" confirmLabel="Decline?" onConfirm={() => run(b.code, "decline", { reason: "Fully booked at that time" })} />
                         </>

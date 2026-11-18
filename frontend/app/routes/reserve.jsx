@@ -9,13 +9,16 @@ import { Button, Arrow, Flame } from "../components/ui/ui";
 import MoCoLink from "../motion/MoCoLink";
 import { img } from "../config/home";
 import { site } from "../config/site";
+import { seo } from "../lib/seo.js";
 
 /* BOOK A TABLE — pick a day, party size and time; we hold a table straight away and staff confirm it. */
 
-export const meta = () => [
-  { title: "Book a Table | BrewGrillz Singapore — Grill & Bar in Bugis" },
-  { name: "description", content: "Book a table at BrewGrillz, 163 Rochor Road, Bugis. Steaks, platters, pizza and Brewerkz craft beer. Groups up to 10 online; bigger parties, send us an event enquiry." },
-];
+export const meta = () =>
+  seo({
+    title: "Book a Table | BrewGrillz Singapore — Grill & Bar in Bugis",
+    description: "Book a table at BrewGrillz, 163 Rochor Road, Bugis. Steaks, platters, pizza and Brewerkz craft beer. Groups up to 10 online; bigger parties, send us an event enquiry.",
+    path: "/reserve",
+  });
 
 const OCCASIONS = ["Birthday", "Anniversary", "Date night", "Business", "Celebration", "Other"];
 const ATTEMPT = "bgz-booking-attempt";

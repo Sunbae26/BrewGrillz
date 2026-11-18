@@ -91,14 +91,14 @@ export default function Hero() {
 
         <div className="hero__cards" aria-hidden="true">
           <MoCoLink to="/menu" push className="hero__card hero__card--a" data-cursor-label="Menu" tabIndex={-1}>
-            <Food image={a.image} alt="" push eager sizes="(max-width: 760px) 45vw, 24vw" />
+            <Food image={a.image} alt="" push sizes="(max-width: 760px) 45vw, 24vw" />
             <span className="hero__card-label">
               <b>{a.short}</b> ${a.price}
             </span>
             <Sticker tone="lime" rotate={8} className="hero__card-sticker">{a.tag}</Sticker>
           </MoCoLink>
           <MoCoLink to="/menu" push className="hero__card hero__card--b" data-cursor-label="Menu" tabIndex={-1}>
-            <Food image={b.image} alt="" push eager sizes="(max-width: 760px) 45vw, 24vw" />
+            <Food image={b.image} alt="" push sizes="(max-width: 760px) 45vw, 24vw" />
             <span className="hero__card-label">
               <b>{b.short}</b> ${b.price}
             </span>

@@ -41,7 +41,7 @@ export default function AdminSettings() {
       <section className="aset">
         <h3 className="adm__sub">Online orders</h3>
         <p className="adm__hint">Kitchen too busy? Pause pickup orders. The website shows your message until you turn them back on.</p>
-        <input className="adm__input" placeholder="Message, e.g. Back at 7pm. Walk-ins welcome!" maxLength={200} value={message} onChange={(e) => setMessage(e.target.value)} />
+        <input className="adm__input" aria-label="Message shown while paused" placeholder="Message, e.g. Back at 7pm. Walk-ins welcome!" maxLength={200} value={message} onChange={(e) => setMessage(e.target.value)} />
         <div className="acard__actions">
           {s.ordersPaused ? (
             <ABtn tone="primary" disabled={action.isPending} onClick={() => save({ ordersPaused: false })}>Turn online orders back on</ABtn>
@@ -56,7 +56,7 @@ export default function AdminSettings() {
         <h3 className="adm__sub">Pickup slot limit</h3>
         <p className="adm__hint">How many orders the kitchen can take per pickup time slot. 0 means no limit.</p>
         <div className="acard__actions">
-          <input className="adm__input adm__input--sm" type="number" min="0" max="100" disabled={!admin} value={capacity} onChange={(e) => setCapacity(e.target.value)} />
+          <input className="adm__input adm__input--sm" aria-label="Orders per pickup time slot" type="number" min="0" max="100" disabled={!admin} value={capacity} onChange={(e) => setCapacity(e.target.value)} />
           {admin && Number(capacity) !== s.slotCapacity && <ABtn tone="primary" onClick={() => save({ slotCapacity: Math.max(0, Math.trunc(Number(capacity))) })}>Save</ABtn>}
         </div>
       </section>
@@ -75,7 +75,7 @@ export default function AdminSettings() {
         </ul>
         {admin && (
           <div className="acard__actions">
-            <input className="adm__input" type="date" min={todaySG()} value={newDate} onChange={(e) => setNewDate(e.target.value)} />
+            <input className="adm__input" aria-label="Day to close" type="date" min={todaySG()} value={newDate} onChange={(e) => setNewDate(e.target.value)} />
             <ABtn tone="primary" disabled={!newDate} onClick={() => { save({ closedDates: [...s.closedDates.filter((d) => d >= todaySG()), newDate] }); setNewDate(""); }}>Close this day</ABtn>
           </div>
         )}

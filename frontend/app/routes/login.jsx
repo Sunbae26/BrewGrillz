@@ -4,12 +4,15 @@ import { apiPost } from "../lib/api.js";
 import { safeNext, useAuth } from "../lib/auth.jsx";
 import { AuthLink, AuthShell, FormAlert, TextField } from "../components/auth/AuthShell";
 import { Button, Arrow } from "../components/ui/ui";
+import { seo } from "../lib/seo.js";
 
-export const meta = () => [
-  { title: "Sign in | BrewGrillz Rewards Club" },
-  { name: "description", content: "Sign in to your BrewGrillz account to earn and spend Rewards points." },
-  { name: "robots", content: "noindex" },
-];
+export const meta = () =>
+  seo({
+    title: "Sign in | BrewGrillz Rewards Club",
+    description: "Sign in to your BrewGrillz account to earn and spend Rewards points.",
+    path: "/login",
+    noIndex: true,
+  });
 
 export default function Login() {
   const navigate = useNavigate();

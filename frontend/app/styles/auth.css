@@ -131,3 +131,8 @@ a.acct__row:hover { background: var(--char-3); }
   .acctbtn { width: 42px; height: 42px; }
   .nav__icons { gap: 0.45rem; }
 }
+
+/* autofill inside our form fields (beats the .field focus style, keeps the dark look) */
+.field input:-webkit-autofill,
+.field input:-webkit-autofill:hover { -webkit-text-fill-color: var(--cream); -webkit-box-shadow: 0 0 0 1000px var(--char-2) inset; box-shadow: 0 0 0 1000px var(--char-2) inset; }
+.field input:-webkit-autofill:focus { -webkit-text-fill-color: var(--cream); -webkit-box-shadow: 0 0 0 1000px var(--char-2) inset, 0 0 0 4px rgba(218, 56, 51, 0.18); box-shadow: 0 0 0 1000px var(--char-2) inset, 0 0 0 4px rgba(218, 56, 51, 0.18); }

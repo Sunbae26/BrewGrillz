@@ -27,7 +27,7 @@
 .hero__card:hover { z-index: 3; }
 .hero__card:hover img { transform: rotate(4deg) scale(1.05); }
 .hero__card-label { position: absolute; left: 14px; bottom: 14px; background: var(--ink); color: var(--cream); padding: 0.4rem 0.75rem; border-radius: 6px; font-size: 0.78rem; letter-spacing: 0.06em; }
-.hero__card-label b { font-family: var(--f-display); font-weight: 400; text-transform: uppercase; font-size: 1rem; margin-right: 0.3rem; color: var(--red); letter-spacing: 0.03em; }
+.hero__card-label b { font-family: var(--f-display); font-weight: 400; text-transform: uppercase; font-size: 1rem; margin-right: 0.3rem; color: var(--red-text); letter-spacing: 0.03em; }
 .hero__card-sticker { position: absolute; top: -14px; right: -18px; }
 .hero__badge { position: absolute; left: -2%; bottom: 2%; z-index: 4; }
 
@@ -282,7 +282,7 @@
 .vibe--red { background: var(--red); color: var(--white); border: 0; }
 .vibe--lime { background: var(--lime); color: var(--ink); border: 0; }
 .vibe__big { font-size: clamp(2.2rem, 3.4vw, 3.2rem); line-height: var(--lh-display); }
-.vibe__small { font-size: var(--fs-small); opacity: 0.8; }
+.vibe__small { font-size: var(--fs-small); }
 @media (max-width: 760px) { .vibe--img { width: 78vw; } .vibe--text { width: 66vw; } .vibes__arrows { display: none; } .vibe--0, .vibe--1, .vibe--2 { transform: none; } }
 
 /* ================= REWARDS ================= */

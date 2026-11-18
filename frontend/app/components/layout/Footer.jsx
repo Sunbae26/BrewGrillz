@@ -87,7 +87,7 @@ export default function Footer() {
       <div className="container footer__bottom">
         <span>© {new Date().getFullYear()} BrewGrillz Singapore. {site.priceNote}</span>
         <span>
-          <MoCoLink to="/privacy">Privacy</MoCoLink> · <MoCoLink to="/terms">Terms</MoCoLink>
+          <MoCoLink to="/privacy">Privacy</MoCoLink> · <MoCoLink to="/terms">Terms</MoCoLink> · <MoCoLink to="/admin/login">Staff login</MoCoLink>
         </span>
       </div>
     </footer>

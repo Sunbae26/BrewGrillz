@@ -6,13 +6,16 @@ import { Visit } from "../components/home/Extras";
 import MoCoLink from "../motion/MoCoLink";
 import { img } from "../config/home";
 import { site } from "../config/site";
+import { seo } from "../lib/seo.js";
 
 /* OUR PLACE — the story, the room, the vibe, and the practical bits (FAQ + map). */
 
-export const meta = () => [
-  { title: "Our Place | BrewGrillz Singapore — Grill & Craft Bar on Rochor Road, Bugis" },
-  { name: "description", content: "BrewGrillz is a grill and craft bar at 163 Rochor Road, Bugis: flame-grilled steaks, sharing platters, Italian pizza and Brewerkz beer in a stylish, cosy, slightly rustic room." },
-];
+export const meta = () =>
+  seo({
+    title: "Our Place | BrewGrillz Singapore — Grill & Craft Bar on Rochor Road, Bugis",
+    description: "BrewGrillz is a grill and craft bar at 163 Rochor Road, Bugis: flame-grilled steaks, sharing platters, Italian pizza and Brewerkz beer in a stylish, cosy, slightly rustic room.",
+    path: "/our-place",
+  });
 
 const PILLARS = [
   { k: "01", title: "The fire", text: "Steaks, ribs, skewers and platters cooked to order over a hot grill. Simple food, done properly.", image: img("sirloin"), sticker: "Flame-grilled" },

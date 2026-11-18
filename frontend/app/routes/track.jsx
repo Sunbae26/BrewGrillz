@@ -5,13 +5,17 @@ import { apiPost } from "../lib/api.js";
 import { Button, Arrow } from "../components/ui/ui";
 import MoCoLink from "../motion/MoCoLink";
 import { site } from "../config/site";
+import { seo } from "../lib/seo.js";
 
 /* TRACK YOUR ORDER — guests enter their order number + email (same as Ruchi). */
 
-export const meta = () => [
-  { title: "Track your order | BrewGrillz Singapore" },
-  { name: "description", content: "Follow your BrewGrillz pickup order live with your order number and email." },
-];
+export const meta = () =>
+  seo({
+    title: "Track your order | BrewGrillz Singapore",
+    description: "Follow your BrewGrillz pickup order live with your order number and email.",
+    path: "/track",
+    noIndex: true,
+  });
 
 const ORDER_CODE = /^BG-\d{6}-[A-Z2-9]{4}$/;
 

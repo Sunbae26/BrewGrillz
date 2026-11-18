@@ -2,8 +2,8 @@ import { useState } from "react";
 import { useOutletContext } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import { apiGet, fieldError } from "../../lib/api.js";
-import { ADMIN_KEYS, useAdminAction } from "../../lib/admin.js";
-import { ABtn, ErrorNote, Loading, PageHead, TwoTap, sgDay } from "../../components/admin/Admin";
+import { ADMIN_KEYS, isAdmin, useAdminAction } from "../../lib/admin.js";
+import { ABtn, AdminOnly, ErrorNote, Loading, PageHead, TwoTap, sgDay } from "../../components/admin/Admin";
 import { TextField } from "../../components/auth/AuthShell";
 
 /* TEAM — admins add staff; only the owner adds or changes admins. */
@@ -13,6 +13,11 @@ const EMPTY = { name: "", email: "", password: "", role: "STAFF" };
 
 export default function AdminTeam() {
   const { user } = useOutletContext();
+  if (!isAdmin(user)) return <AdminOnly title="Team" />;
+  return <Team user={user} />;
+}
+
+function Team({ user }) {
   const team = useQuery({ queryKey: ADMIN_KEYS.team, queryFn: ({ signal }) => apiGet("/admin/team", { signal }) });
   const action = useAdminAction([ADMIN_KEYS.team]);
   const [form, setForm] = useState(EMPTY);
@@ -69,13 +74,17 @@ export default function AdminTeam() {
           <TextField id="tname" label="Name" value={form.name} onChange={set("name")} error={fieldError(action.error, "name")} />
           <TextField id="temail" label="Email" type="email" value={form.email} onChange={set("email")} error={fieldError(action.error, "email")} />
           <TextField id="tpass" label="Starting password" type="text" autoComplete="off" value={form.password} onChange={set("password")} error={fieldError(action.error, "password")} hint="8+ characters with a letter and a number" />
-          <label className="field">
+          <div className="field">
             <span>Access</span>
-            <select value={form.role} onChange={set("role")}>
-              <option value="STAFF">Staff: orders, bookings, menu sold-out, Rewards</option>
-              {user.isOwner && <option value="ADMIN">Admin: also prices, refunds, team, reports</option>}
-            </select>
-          </label>
+            <div className="arole" role="radiogroup" aria-label="Access">
+              {[["STAFF", "Staff", "Orders, bookings, sold-out, Rewards"], ...(user.isOwner ? [["ADMIN", "Admin", "Also prices, refunds, team, reports"]] : [])].map(([value, label, text]) => (
+                <button key={value} type="button" role="radio" aria-checked={form.role === value} className={`arole__opt ${form.role === value ? "is-on" : ""}`} onClick={() => setForm({ ...form, role: value })}>
+                  <b>{label}</b>
+                  <small>{text}</small>
+                </button>
+              ))}
+            </div>
+          </div>
           {action.error && !action.error.details?.length && !customerExists && <ErrorNote error={action.error} />}
           {customerExists && (
             <p className="falert falert--info" role="status">

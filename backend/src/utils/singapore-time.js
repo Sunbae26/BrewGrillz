@@ -39,11 +39,17 @@ export const singaporeInstant = (isoDate, minutes) =>
     `${isoDate}T${String(Math.floor(minutes / 60)).padStart(2, "0")}:${String(minutes % 60).padStart(2, "0")}:00+08:00`,
   );
 
+// Making an Intl.DateTimeFormat is slow (the pickup-time list formats hundreds of times per request),
+// so each set of options gets one formatter that's reused.
+const formatters = new Map();
 export function formatSingapore(date, options) {
-  return new Intl.DateTimeFormat("en-SG", {
-    timeZone: "Asia/Singapore",
-    ...options,
-  }).format(date);
+  const key = JSON.stringify(options);
+  let format = formatters.get(key);
+  if (!format) {
+    format = new Intl.DateTimeFormat("en-SG", { timeZone: "Asia/Singapore", ...options });
+    formatters.set(key, format);
+  }
+  return format.format(date);
 }
 
 export const formatPickup = (date) =>

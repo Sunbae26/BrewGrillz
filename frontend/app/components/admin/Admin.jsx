@@ -51,3 +51,12 @@ export function PageHead({ title, children }) {
     </div>
   );
 }
+
+export function AdminOnly({ title }) {
+  return (
+    <>
+      <PageHead title={title} />
+      <p className="falert falert--error" role="alert">Only the owner or an admin can open this page.</p>
+    </>
+  );
+}

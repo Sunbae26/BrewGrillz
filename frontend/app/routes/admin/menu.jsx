@@ -38,7 +38,7 @@ export default function AdminMenu() {
   return (
     <>
       <PageHead title="Menu">
-        <input className="adm__input" type="search" placeholder="Find a dish or drink" value={q} onChange={(e) => setQ(e.target.value)} />
+        <input className="adm__input" type="search" aria-label="Find a dish or drink" placeholder="Find a dish or drink" value={q} onChange={(e) => setQ(e.target.value)} />
         <label className="adm__check">
           <input type="checkbox" checked={soldOnly} onChange={(e) => setSoldOnly(e.target.checked)} /> Sold out only ({soldOut})
         </label>

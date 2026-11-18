@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import { apiGet, apiPatch, fieldError } from "../lib/api.js";
@@ -28,9 +28,10 @@ export default function Account() {
   const navigate = useNavigate();
   const { user, loading, signOut, signOutOthers } = useAuth();
   const [tab, setTab] = useState("orders");
+  const leaving = useRef(false); // signing out goes home, not to the sign-in page
 
   useEffect(() => {
-    if (!loading && !user) navigate("/login?next=/account", { replace: true });
+    if (!loading && !user && !leaving.current) navigate("/login?next=/account", { replace: true });
   }, [loading, user, navigate]);
 
   const signedIn = Boolean(user);
@@ -56,7 +57,7 @@ export default function Account() {
           </div>
           <div className="acct__head-actions">
             {isStaff(user) && <Button to="/admin" variant="ghost">Open dashboard</Button>}
-            <Button variant="ghost" onClick={async () => { await signOut(); navigate("/"); }}>Sign out</Button>
+            <Button variant="ghost" onClick={async () => { leaving.current = true; await signOut(); navigate("/", { replace: true }); }}>Sign out</Button>
           </div>
         </header>
 

@@ -7,6 +7,7 @@ import { useCart, MAX_QTY } from '../lib/cart.jsx'
 import { loadOrNull, useMenu } from '../lib/queries.js'
 import QtyStepper from '../components/ui/QtyStepper'
 import DeliveryLinks from '../components/ui/DeliveryLinks'
+import { seo } from "../lib/seo.js";
 
 /*
   THE MENU — every dish and drink, from the database through the API.
@@ -31,10 +32,12 @@ export async function loader() {
   return { menu: await loadOrNull('/menu') }
 }
 
-export const meta = () => [
-  { title: 'Menu | BrewGrillz Singapore — Steaks, Pizza, Pasta & Craft Beer in Bugis' },
-  { name: 'description', content: 'The full BrewGrillz menu: flame-grilled steaks, BBQ ribs, sharing platters, pizza, pasta, burgers, Brewerkz craft beer and cocktails. Order online for pickup at 163 Rochor Road, Bugis.' },
-]
+export const meta = () =>
+  seo({
+    title: "Menu | BrewGrillz Singapore — Steaks, Pizza, Pasta & Craft Beer in Bugis",
+    description: "The full BrewGrillz menu: flame-grilled steaks, BBQ ribs, sharing platters, pizza, pasta, burgers, Brewerkz craft beer and cocktails. Order online for pickup at 163 Rochor Road, Bugis.",
+    path: "/menu",
+  });
 
 /* ---------- dish card ---------- */
 function DishCard({ item, onOpen, tableMode }) {
@@ -432,7 +435,7 @@ function MenuBody({ menu }) {
 
       {/* print-only: a clean text version of the whole menu (food + drinks) */}
       <div className="print-only print-menu">
-        <h1 className="display">BrewGrillz · Dining Menu</h1>
+        <p className="display print-menu__title" aria-hidden="true">BrewGrillz · Dining Menu</p>
         {food.map((c) => (
           <section key={c.id} className="board__block">
             <h3 className="board__title">{c.name}{c.note ? ` — ${c.note}` : ''}</h3>

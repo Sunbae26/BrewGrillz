@@ -1,0 +1,13 @@
+{
+  "name": "brewgrillz-perf",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "lighthouse": "node lighthouse/run.js",
+    "k6": "k6 run k6/dinner-rush.js",
+    "k6:stress": "k6 run k6/stress.js"
+  },
+  "devDependencies": {
+    "lighthouse": "^12.8.2"
+  }
+}

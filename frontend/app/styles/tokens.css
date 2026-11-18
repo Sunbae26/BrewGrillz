@@ -8,6 +8,7 @@
   --red: #da3833;
   --red-hot: #ff4a3d;
   --red-deep: #9e1f1b;
+  --red-text: #f05a4e;   /* red for small text on dark backgrounds (5:1 contrast) */
   --char: #141110;        /* page background (deeper than logo charcoal) */
   --char-2: #1d1918;      /* raised surfaces */
   --char-3: #322d2b;      /* logo charcoal — cards, borders */
@@ -24,7 +25,7 @@
   /* Text */
   --text: var(--cream);
   --text-dim: rgba(245, 239, 230, 0.66);
-  --text-faint: rgba(245, 239, 230, 0.38);
+  --text-faint: rgba(245, 239, 230, 0.54); /* readable: 5:1 contrast on the dark panels */
   --line: rgba(245, 239, 230, 0.12);
 
   /* Type */

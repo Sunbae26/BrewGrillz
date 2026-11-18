@@ -42,6 +42,7 @@ jobs:
           cache-dependency-path: |
             backend/package-lock.json
             frontend/package-lock.json
+            qa/package-lock.json
 
       - name: Backend install
         working-directory: backend
@@ -84,6 +85,21 @@ jobs:
       - name: API tests
         working-directory: qa
         run: node --test --test-concurrency=1 api/*.test.mjs
+
+      - name: Browser tests (desktop and phone)
+        working-directory: qa
+        run: |
+          (cd ../frontend && nohup npm run preview > ../preview.log 2>&1 &)
+          npm ci
+          npx playwright install --with-deps chromium
+          npx playwright test
+
+      - name: Browser test results
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qa-results
+          path: qa/results
 
       - name: API log
         if: failure()
