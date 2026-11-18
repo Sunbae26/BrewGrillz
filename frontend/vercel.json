@@ -4,7 +4,7 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "rewrites": [
-    { "source": "/api/:path*", "destination": "https://brewgrillz-api.onrender.com/api/:path*" },
+    { "source": "/api/:path*", "destination": "https://brewgrillz.onrender.com/api/:path*" },
     { "source": "/order/:path*", "destination": "/__spa-fallback" },
     { "source": "/reserve/:code", "destination": "/__spa-fallback" },
     { "source": "/admin", "destination": "/__spa-fallback" },
@@ -30,7 +30,7 @@
         { "key": "Cross-Origin-Opener-Policy", "value": "same-origin-allow-popups" },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self'; font-src 'self' data:; connect-src 'self' https://api.brewgrillz.sg https://brewgrillz-api.onrender.com; frame-src https://www.google.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests"
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self'; font-src 'self' data:; connect-src 'self' https://api.brewgrillz.sg https://brewgrillz.onrender.com; frame-src https://www.google.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests"
         }
       ]
     }
