@@ -39,7 +39,8 @@ rule("STRIPE_SECRET_KEY", (v) => /^(sk|rk)_(live|test)_/.test(v), "should start 
 rule("STRIPE_WEBHOOK_SECRET", (v) => v.startsWith("whsec_"), "should start with whsec_");
 rule("RESEND_API_KEY", (v) => v.startsWith("re_"), "should start with re_");
 for (const key of ["RESTAURANT_EMAIL", "EMAIL_REPLY_TO"]) rule(key, (v) => /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v), "should be an email address");
-rule("EMAIL_FROM", (v) => !/resend\.dev/.test(v), "must be on your own domain (verify the domain in Resend first)");
+if (render.APP_ENV !== "staging") rule("EMAIL_FROM", (v) => !/resend\.dev/.test(v), "must be on your own domain (verify the domain in Resend first)");
+else warnings.push("APP_ENV=staging: emails come from Resend's test sender and only reach the email you signed up to Resend with. Set APP_ENV=production for the live site.");
 
 if (render.STRIPE_SECRET_KEY?.includes("_test_"))
   warnings.push("STRIPE_SECRET_KEY is a TEST key. Fine for staging; for the live site use the client's sk_live_ key.");

@@ -30,6 +30,8 @@ Open `launch/filled/render.env` and replace every `PASTE_...`:
 - `STRIPE_WEBHOOK_SECRET`: comes in step 5. Leave the placeholder for now if you like, then come back.
 - `RESEND_API_KEY`: Resend → API keys.
 
+On staging without the brewgrillz.sg domain yet: set `APP_ENV=staging`, `EMAIL_FROM=BrewGrillz <onboarding@resend.dev>` and `RESTAURANT_EMAIL` to the email you signed up to Resend with (Resend's test sender only delivers to that address, so use it for test orders too).
+
 On staging, change the addresses in both files to your staging links (for example `SITE_URL=https://brewgrillz-staging.vercel.app` and the same in `CORS_ORIGINS` and `VITE_SITE_URL`).
 
 Then check everything:

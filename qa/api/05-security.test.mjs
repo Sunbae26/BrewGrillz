@@ -187,6 +187,8 @@ const boot = (env, code = `await import("./src/config/env.js"); console.log("sta
 
 test("SEC-11 production starts with good settings and refuses unsafe ones", () => {
   assert.equal(boot(LIVE).status, 0, boot(LIVE).stderr);
+  const staging = boot({ ...LIVE, APP_ENV: "staging", EMAIL_FROM: "BrewGrillz <onboarding@resend.dev>" });
+  assert.equal(staging.status, 0, `staging may use the Resend test sender: ${staging.stderr}`);
   const cases = [
     [{ PAYMENT_PROVIDER: "test" }, /test mode is not allowed in production/],
     [{ SESSION_SECRET: "dev-only-session" }, /SESSION_SECRET/],

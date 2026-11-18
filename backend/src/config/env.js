@@ -11,6 +11,9 @@ const schema = z.object({
     .enum(["development", "production", "test"])
     .default("development"),
   PORT: z.coerce.number().int().positive().default(4000),
+  // "staging" relaxes one live-site rule: emails may come from Resend's test sender (onboarding@resend.dev)
+  // while the restaurant's own domain isn't verified yet. Everything else stays as strict as live.
+  APP_ENV: z.enum(["production", "staging"]).default("production"),
   TRUST_PROXY: z.coerce.number().int().min(0).max(5).default(1),
   CLIENT_IP_HEADER: optional.transform((value) => value?.toLowerCase()),
   DATABASE_URL: z
@@ -134,7 +137,7 @@ if (live) {
     missing.push("an ORDER_TOKEN_SECRET of its own (it must differ from SESSION_SECRET)");
   if (data.EMAIL_PROVIDER !== "resend")
     missing.push("EMAIL_PROVIDER=resend (file mode would not send any emails in production)");
-  if (/onboarding@resend\.dev/i.test(data.EMAIL_FROM))
+  if (/onboarding@resend\.dev/i.test(data.EMAIL_FROM) && data.APP_ENV !== "staging")
     missing.push("EMAIL_FROM on your own domain, like BrewGrillz <info@brewgrillz.sg>");
   if (!data.SITE_URL.startsWith("https://"))
     missing.push("SITE_URL starting with https://");
