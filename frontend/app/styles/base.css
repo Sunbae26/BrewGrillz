@@ -106,3 +106,7 @@ select:-webkit-autofill {
   transition: background-color 9999s ease-out 0s;
 }
 input:-webkit-autofill:focus { -webkit-box-shadow: 0 0 0 1000px var(--char-2) inset, 0 0 0 4px rgba(218, 56, 51, 0.18); }
+
+/* Big screens and TVs: everything scales up a step so the page fills the screen instead of floating small */
+@media (min-width: 2200px) { html { font-size: 112.5%; } :root { --max: 1680px; } .nav__inner { max-width: 1840px; } }
+@media (min-width: 3000px) { html { font-size: 137.5%; } :root { --max: 2100px; } .nav__inner { max-width: 2300px; } }

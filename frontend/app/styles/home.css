@@ -44,7 +44,7 @@
   .hero__line--red { padding-left: 0.3em; }
   .hero__eyebrow { margin-bottom: var(--s-3); }
 }
-@media (max-width: 560px) { .hero__title { font-size: clamp(4rem, 21vw, 6rem); } }
+@media (max-width: 560px) { .hero__title { font-size: clamp(3.4rem, 17vw, 5rem); margin-left: 0; } }
 
 /* ================= INFO STRIP ================= */
 .info { position: relative; z-index: 3; background: var(--char-2); border-top: 3px solid var(--red); border-bottom: 1px solid var(--line); }
@@ -109,6 +109,10 @@
   .me__frame { height: 100%; margin: 0 var(--gutter); }
   .me__head { margin-bottom: var(--s-4); }
   .me__desc { font-size: 0.95rem; }
+  .me__stage > * { min-width: 0; }
+  .me__panel { padding-left: var(--gutter) !important; }
+  .me__head { flex-wrap: wrap; row-gap: 0.8rem; }
+  .me__head .eyebrow { white-space: normal; }
 }
 
 
@@ -394,3 +398,4 @@
 .pyf__all-script { font-size: clamp(1.3rem, 2.4vw, 1.8rem); color: var(--amber); transform: rotate(-3deg); }
 .pyf__all-note { font-size: var(--fs-small); color: var(--text-dim); letter-spacing: 0.04em; }
 .nmap__tag rect { filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.6)); }
+@media (min-width: 2200px) { .hero__cards { height: clamp(380px, 30vw, 760px); } .hero__badge { left: -8%; bottom: -4%; } }

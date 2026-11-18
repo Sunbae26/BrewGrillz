@@ -97,6 +97,24 @@ All fixed.
 - **Problem:** the logo was 40 KB and the favicon 22 KB, loaded on every page.
 - **Fix:** they are now 23 KB and 8 KB.
 
+## Found on staging (18 November)
+
+### BUG-11 Critical: pages stop scrolling on phones after using the hamburger menu
+
+- **Problem:** after tapping any link in the phone menu, the next page (and every page after it, including Home) couldn't be scrolled until the page was reloaded. The menu locked scrolling when it opened, but the unlock code sat after a check that stopped early once the menu had closed.
+- **Why the tests missed it:** the phone tests opened every page directly by its address, which always starts unlocked. None of them moved between pages through the menu and then swiped.
+- **Fix:** the unlock now always runs when the menu closes. Tapping the page you're already on also closes the menu (BUG-12).
+- **New tests:** `e2e/08-mobile-navigation`: every menu link, the menu's buttons, the cart and the dish pop-up, each followed by a real finger swipe.
+
+### BUG-12 Medium: tapping the current page in the phone menu left the menu open
+
+Found by the new test. Fixed.
+
+### Phone side margins and big screens
+
+- Side margins on phones went from 17 px to 24 px, and the home headline is a little smaller on phones. The "Main event" section now stays inside the margins.
+- On screens 2200 px and wider (big monitors, TVs), the whole site scales up a step instead of floating small in the middle.
+
 ## Also added in Sprint 6
 
 - **SEO:**

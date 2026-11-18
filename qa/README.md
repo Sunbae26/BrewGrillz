@@ -48,6 +48,7 @@ Run `npm run api` first: the email check in `npm run e2e` looks at the emails th
 | `e2e/04-responsive` | 13 pages at 8 screen sizes: nothing scrolls sideways |
 | `e2e/05-accessibility` | axe (WCAG 2.1 AA) on public and dashboard pages, keyboard use |
 | `e2e/06-seo` | Titles, descriptions, canonical links, sharing image, Google restaurant details, sitemap, robots.txt |
+| `e2e/08-mobile-navigation` | On a phone: every link in the hamburger menu, the cart and the dish pop-up, then a real swipe to check the page still scrolls; side margins on every page |
 | `e2e/07-emails` | One of each email type: correct values, brand, contact details, fits a phone |
 
 Results, screenshots and failure traces go to `qa/results/` (not committed).

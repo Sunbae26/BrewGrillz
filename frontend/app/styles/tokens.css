@@ -53,7 +53,7 @@
   --s-8: 4.5rem;
   --s-9: 7rem;
   --section-y: clamp(5rem, 11vw, 10rem);
-  --gutter: clamp(1.1rem, 4vw, 3.5rem);
+  --gutter: clamp(1.5rem, 6vw, 3.5rem); /* side space: 24px on phones, growing to 56px on big screens */
   --max: 1440px;
 
   /* Shape */

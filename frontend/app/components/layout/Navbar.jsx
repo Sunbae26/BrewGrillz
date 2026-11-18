@@ -38,17 +38,19 @@ export default function Navbar() {
 
   // Full-screen menu: links whip in with blur + skew
   useEffect(() => {
-    const el = menuRef.current
-    if (!el) return
+    // Lock the page behind the open menu, and ALWAYS unlock when it closes (the menu is already gone by then).
     open ? lenis?.stop() : lenis?.start()
     document.body.style.overflow = open ? 'hidden' : ''
-    if (prefersReducedMotion()) return
+    const el = menuRef.current
+    if (!el || prefersReducedMotion()) return
     if (open) {
       gsap.fromTo(el, { clipPath: 'inset(0 0 100% 0)' }, { clipPath: 'inset(0 0 0% 0)', duration: 0.7, ease: 'expo.inOut' })
       gsap.fromTo(el.querySelectorAll('.mnav__link'), { xPercent: 40, skewX: -14, opacity: 0 },
         { xPercent: 0, skewX: 0, opacity: 1, stagger: 0.06, duration: 1, delay: 0.25 })
     }
   }, [open, lenis])
+
+  useEffect(() => () => { document.body.style.overflow = '' }, [])
 
   return (
     <>
@@ -88,7 +90,8 @@ export default function Navbar() {
       </header>
 
       {open && (
-        <div className="mnav" ref={menuRef}>
+        // any link in the menu closes it, even the page you're already on
+        <div className="mnav" ref={menuRef} onClick={(e) => e.target.closest('a') && setOpen(false)}>
           <nav className="mnav__links">
             {[{ label: 'Home', to: '/' }, ...nav, { label: 'Book a table', to: '/reserve' }].map((l, i) => (
               <MoCoLink key={l.to} to={l.to} className="mnav__link display">
