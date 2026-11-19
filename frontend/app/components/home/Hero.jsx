@@ -1,6 +1,5 @@
 import { useLayoutEffect, useRef } from 'react'
 import { Button, SpinBadge, Sticker, Food, Arrow } from '../ui/ui'
-import MoCoLink from '../../motion/MoCoLink'
 import { gsap, prefersReducedMotion, isTouch } from '../../motion/gsap'
 import { site } from '../../config/site'
 import { mainEvent } from '../../config/home'
@@ -90,19 +89,20 @@ export default function Hero() {
         </div>
 
         <div className="hero__cards" aria-hidden="true">
-          <MoCoLink to="/menu" push className="hero__card hero__card--a" data-cursor-label="Menu" tabIndex={-1}>
+          {/* Just for looks: the cards react to the mouse but don't link anywhere (the buttons do that) */}
+          <div className="hero__card hero__card--a">
             <Food image={a.image} alt="" push sizes="(max-width: 760px) 45vw, 24vw" />
             <span className="hero__card-label">
               <b>{a.short}</b> ${a.price}
             </span>
             <Sticker tone="lime" rotate={8} className="hero__card-sticker">{a.tag}</Sticker>
-          </MoCoLink>
-          <MoCoLink to="/menu" push className="hero__card hero__card--b" data-cursor-label="Menu" tabIndex={-1}>
+          </div>
+          <div className="hero__card hero__card--b">
             <Food image={b.image} alt="" push sizes="(max-width: 760px) 45vw, 24vw" />
             <span className="hero__card-label">
               <b>{b.short}</b> ${b.price}
             </span>
-          </MoCoLink>
+          </div>
           <SpinBadge className="hero__badge" size={150} />
         </div>
       </div>

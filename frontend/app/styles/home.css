@@ -24,27 +24,29 @@
 .hero__card img { width: 100%; height: 100%; object-fit: cover; border-radius: var(--r-2); border: 6px solid var(--cream); transition: transform 0.6s var(--ease-ramp); }
 .hero__card--a { right: 30%; top: 4%; transform: rotate(-8deg); z-index: 2; }
 .hero__card--b { right: 0; top: 30%; transform: rotate(9deg); width: 54%; aspect-ratio: 4 / 3.4; }
-.hero__card:hover { z-index: 3; }
+.hero__card { transition: box-shadow 0.5s var(--ease-ramp); }
+.hero__card:hover { z-index: 3; box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.8); }
 .hero__card:hover img { transform: rotate(4deg) scale(1.05); }
 .hero__card-label { position: absolute; left: 14px; bottom: 14px; background: var(--ink); color: var(--cream); padding: 0.4rem 0.75rem; border-radius: 6px; font-size: 0.78rem; letter-spacing: 0.06em; }
 .hero__card-label b { font-family: var(--f-display); font-weight: 400; text-transform: uppercase; font-size: 1rem; margin-right: 0.3rem; color: var(--red-text); letter-spacing: 0.03em; }
 .hero__card-sticker { position: absolute; top: -14px; right: -18px; }
 .hero__badge { position: absolute; left: -2%; bottom: 2%; z-index: 4; }
 
+/* Phones and tablets: no photo cards (the background photo shows the food), a smaller headline,
+   and the whole hero fits on the first screen with both buttons visible. */
 @media (max-width: 900px) {
-  .hero__grid { grid-template-columns: 1fr; padding-bottom: 4.5rem; gap: 0.5rem; }
-  .hero__cards { order: -1; position: relative; height: clamp(230px, 66vw, 340px); width: 100%; margin-bottom: 0.5rem; }
-  .hero__card--a { right: auto; left: 8%; top: 4%; width: 40%; }
-  .hero__card--b { right: 6%; top: 16%; width: 46%; }
-  .hero__card img { border-width: 4px; }
-  .hero__badge { display: none !important; }
-  .hero__card-label { font-size: 0.66rem; left: 8px; bottom: 8px; }
-  .hero__card-label b { font-size: 0.8rem; }
-  .hero__card-sticker { font-size: 0.75rem; top: -10px; right: -8px; }
+  .hero__grid { grid-template-columns: 1fr; padding-bottom: clamp(2.5rem, 8vw, 4rem); gap: 0; }
+  .hero__cards { display: none; }
+  .hero__title { font-size: clamp(2.6rem, 9vw, 4.4rem); margin-left: 0; }
   .hero__line--red { padding-left: 0.3em; }
   .hero__eyebrow { margin-bottom: var(--s-3); }
+  .hero__meta { margin-top: var(--s-4); gap: var(--s-4); }
 }
-@media (max-width: 560px) { .hero__title { font-size: clamp(3.4rem, 17vw, 5rem); margin-left: 0; } }
+@media (max-width: 560px) {
+  .hero__title { font-size: clamp(2.6rem, 11.5vw, 3.6rem); }
+  .hero__meta .lead { font-size: 1rem; }
+  .hero__ctas .btn { flex: 1 1 auto; justify-content: center; }
+}
 
 /* ================= INFO STRIP ================= */
 .info { position: relative; z-index: 3; background: var(--char-2); border-top: 3px solid var(--red); border-bottom: 1px solid var(--line); }

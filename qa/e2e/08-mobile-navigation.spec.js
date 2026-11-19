@@ -118,3 +118,32 @@ test("E2E-MOB-06 phone navbar: account, cart and menu buttons are evenly spaced"
   const gap2 = m.x - (c.x + c.width);
   expect(Math.abs(gap1 - gap2), `gaps ${gap1}px and ${gap2}px`).toBeLessThanOrEqual(2);
 });
+
+test("E2E-MOB-07 phone hero: no photo cards, headline inside the margins, both buttons on the first screen", async ({ page }) => {
+  for (const [width, height] of [[360, 740], [390, 844], [430, 932]]) {
+    await page.setViewportSize({ width, height });
+    await page.goto("/");
+    await expect(page.locator(".hero__cards")).toBeHidden();
+    const title = await page.locator(".hero__title").boundingBox();
+    expect(title.x, `${width}px: headline left margin`).toBeGreaterThanOrEqual(16);
+    expect(width - (title.x + title.width), `${width}px: headline right margin`).toBeGreaterThanOrEqual(16);
+    for (const name of ["Order online", "Book a table"]) {
+      const box = await page.locator(".hero__ctas .btn", { hasText: name }).boundingBox();
+      expect(box.y + box.height, `${width}px: "${name}" is on the first screen`).toBeLessThanOrEqual(height);
+    }
+  }
+});
+
+test("E2E-MOB-08 desktop hero photo cards are decoration only: clicking them stays on the home page", async ({ browser }) => {
+  const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+  const page = await context.newPage();
+  await page.addInitScript(() => sessionStorage.setItem("bgz-intro", "1"));
+  await page.goto("/");
+  await expect(page.locator(".hero__cards")).toBeVisible();
+  await expect(page.locator(".hero__cards a")).toHaveCount(0);
+  await page.waitForTimeout(1500);
+  await page.locator(".hero__card--a").click({ force: true });
+  await page.waitForTimeout(800);
+  expect(new URL(page.url()).pathname).toBe("/");
+  await context.close();
+});
