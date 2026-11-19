@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router";
 import { useQuery } from "@tanstack/react-query";
+import { DayRibbon, LoadingNote, TimeGrid } from "../components/ui/Pickers";
 import { apiGet, apiPost } from "../lib/api.js";
-import { bookingDay, bookingTime, dayParts, getLocalBookings, saveLocalBooking } from "../lib/booking.js";
+import { bookingDay, bookingTime, getLocalBookings, saveLocalBooking } from "../lib/booking.js";
 import PageHero from "../components/ui/PageHero";
 import QtyStepper from "../components/ui/QtyStepper";
 import { Button, Arrow, Flame } from "../components/ui/ui";
@@ -41,7 +42,7 @@ const validEmail = (value) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value.trim())
 export default function Reserve() {
   const navigate = useNavigate();
   const { data: rules } = useQuery({ queryKey: ["booking-rules"], queryFn: () => apiGet("/reservations/rules"), staleTime: Infinity });
-  const { data: days = [] } = useQuery({ queryKey: ["booking-days"], queryFn: () => apiGet("/reservations/days"), staleTime: 300_000 });
+  const { data: days = [], isPending: loadingDays } = useQuery({ queryKey: ["booking-days"], queryFn: () => apiGet("/reservations/days"), staleTime: 300_000 });
   const maxParty = rules?.maxParty ?? 10;
 
   const [date, setDate] = useState("");
@@ -156,29 +157,9 @@ export default function Reserve() {
             <fieldset className="cbox">
               <legend className="cbox__title"><span>01</span> When</legend>
 
+              <LoadingNote loading={loadingDays || (loadingTimes && !times.length)} />
               <div className="book__label">Day</div>
-              <div className="ribbon" role="listbox" aria-label="Choose a day">
-                {days.length === 0
-                  ? Array.from({ length: 8 }, (_, i) => <span key={i} className="ribbon__day ribbon__day--ghost" />)
-                  : days.map((d) => {
-                      const p = dayParts(d.date);
-                      return (
-                        <button
-                          key={d.date}
-                          type="button"
-                          role="option"
-                          aria-selected={date === d.date}
-                          disabled={d.closed}
-                          className={`ribbon__day ${date === d.date ? "is-on" : ""}`}
-                          onClick={() => { setDate(d.date); setTime(""); }}
-                        >
-                          <span>{p.weekday}</span>
-                          <b>{p.day}</b>
-                          <span>{d.closed ? "Closed" : p.month}</span>
-                        </button>
-                      );
-                    })}
-              </div>
+              <DayRibbon days={days} value={date} onChange={(d) => { setDate(d); setTime(""); }} loading={loadingDays} />
 
               <div className="book__row">
                 <div>
@@ -194,26 +175,7 @@ export default function Reserve() {
               ) : times.length === 0 && !loadingTimes && date ? (
                 <p className="checkout__notice">No more times today. Try tomorrow, or call us on {site.phone}.</p>
               ) : (
-                <div className="slots" role="listbox" aria-label="Choose a time">
-                  {(times.length ? times : Array.from({ length: 12 }, (_, i) => ({ iso: i, ghost: true }))).map((t) =>
-                    t.ghost ? (
-                      <span key={t.iso} className="slot slot--ghost" />
-                    ) : (
-                      <button
-                        key={t.iso}
-                        type="button"
-                        role="option"
-                        aria-selected={time === t.iso}
-                        disabled={!t.available}
-                        className={`slot ${time === t.iso ? "is-on" : ""}`}
-                        onClick={() => { setTime(t.iso); setError(null); }}
-                      >
-                        {t.label}
-                        {!t.available && <small>Full</small>}
-                      </button>
-                    ),
-                  )}
-                </div>
+                <TimeGrid times={times} value={time} onChange={(iso) => { setTime(iso); setError(null); }} loading={!date || (loadingTimes && !times.length)} />
               )}
             </fieldset>
 

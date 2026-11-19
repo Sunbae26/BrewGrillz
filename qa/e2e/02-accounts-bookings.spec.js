@@ -62,8 +62,8 @@ test.describe("Accounts, Rewards and bookings", () => {
 
   test("E2E-BOOK-01 book a table, see the status page, then cancel it @mobile", async ({ page }) => {
     await page.goto("/reserve");
-    await page.locator(".ribbon__day").nth(3).click();
-    await page.locator(".slot:not([disabled])").nth(1).click();
+    await page.locator("button.ribbon__day").nth(3).click();
+    await page.locator("button.slot:not([disabled])").nth(1).click();
     await page.locator('input[autocomplete="name"]').fill("Booking Tester");
     await page.locator('input[autocomplete="tel"]').fill(randomPhone());
     await page.locator('input[type="email"]').first().fill(`book.${Date.now()}@example.com`);

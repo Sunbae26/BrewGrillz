@@ -11,6 +11,7 @@ import QtyStepper from "../components/ui/QtyStepper";
 import TrashIcon from "../components/ui/TrashIcon";
 import MoCoLink from "../motion/MoCoLink";
 import DeliveryLinks from "../components/ui/DeliveryLinks";
+import { DayRibbon, LoadingNote, TimeGrid } from "../components/ui/Pickers";
 
 /* CHECKOUT — pickup only. Details → pickup time → pay online (Stripe, or instantly in test mode). */
 const SAVED = "bgz-customer-v1";
@@ -223,20 +224,23 @@ export default function Checkout() {
               ) : !slotsLoading && days.length === 0 ? (
                 <p className="checkout__notice">No pickup times are left right now. Please try again later, or call us on +65 6312 2847.</p>
               ) : (
-                <div className="cbox__fields">
-                  <label className="field"><span>Day</span>
-                    <select value={day} onChange={(e) => setDay(e.target.value)} disabled={slotsLoading}>
-                      {days.map((d) => <option key={d.date} value={d.date}>{d.label}</option>)}
-                    </select>
-                  </label>
-                  <label className={`field ${err("pickupAt") ? "field--err" : ""}`}><span>Time</span>
-                    <select value={slot} onChange={(e) => { setSlot(e.target.value); clearErr("pickupAt"); }} disabled={slotsLoading}>
-                      {slotsLoading && <option>Loading…</option>}
-                      {slots.map((s) => <option key={s.iso} value={s.iso}>{s.label}</option>)}
-                    </select>
-                  </label>
-                  <label className="field field--wide"><span>Order notes (optional)</span><textarea rows="2" maxLength={300} value={form.notes} onChange={set("notes")} placeholder="Allergies, cutlery, anything we should know" /></label>
-                </div>
+                <>
+                  <LoadingNote loading={slotsLoading} />
+                  <div className="book__label">Day</div>
+                  <DayRibbon days={days} value={day} onChange={setDay} loading={slotsLoading} label="Choose a pickup day" />
+                  <div className={`book__label ${err("pickupAt") ? "book__label--err" : ""}`}>Time {err("pickupAt") && <em>· choose one</em>}</div>
+                  <TimeGrid
+                    times={slots}
+                    value={slot}
+                    onChange={(iso) => { setSlot(iso); clearErr("pickupAt"); }}
+                    loading={slotsLoading}
+                    grouped
+                    label="Choose a pickup time"
+                  />
+                  <div className="cbox__fields pick__notes">
+                    <label className="field field--wide"><span>Order notes (optional)</span><textarea rows="2" maxLength={300} value={form.notes} onChange={set("notes")} placeholder="Allergies, cutlery, anything we should know" /></label>
+                  </div>
+                </>
               )}
             </fieldset>
             <DeliveryLinks />

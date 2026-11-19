@@ -93,3 +93,27 @@ test.describe("Pickup orders", () => {
     expect(top).toBeLessThan(320);
   });
 });
+
+test.describe("Pickup time picker", () => {
+  test("E2E-ORD-07 slow backend: shimmer and a waiting message show, then our own day and time pickers @mobile", async ({ page }) => {
+    await page.route(/\/api\/orders\/pickup-slots/, async (route) => {
+      await new Promise((r) => setTimeout(r, 6000));
+      await route.continue();
+    });
+    await page.goto("/menu");
+    await addDish(page, "Truffle Fries");
+    await page.goto("/checkout");
+    await expect(page.locator(".ribbon__day--ghost.shimmer").first()).toBeVisible();
+    await expect(page.locator(".slot--ghost.shimmer").first()).toBeVisible();
+    await expect(page.locator(".pick__loading")).toContainText(/Still loading/, { timeout: 8000 });
+    await expect(page.locator(".ribbon__day:not(.ribbon__day--ghost)").first()).toBeVisible({ timeout: 15000 });
+    await expect(page.locator(".pick__loading")).toHaveCount(0);
+    await expect(page.locator(".checkout select")).toHaveCount(0);
+    // a different day and a later time can be chosen
+    await page.locator(".ribbon__day:not(.ribbon__day--ghost)").nth(1).click();
+    const later = page.locator(".pick__groups .slot").nth(3);
+    await later.click();
+    await expect(later).toHaveClass(/is-on/);
+    await expect(page.locator(".pick__period").first()).toBeVisible();
+  });
+});

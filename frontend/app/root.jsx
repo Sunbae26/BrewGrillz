@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Links, Meta, Outlet, Scripts, isRouteErrorResponse, Link, useLocation } from "react-router";
 import { QueryClientProvider } from "@tanstack/react-query";
 import "@fontsource/anton/400.css";
@@ -26,7 +26,7 @@ import Footer from "./components/layout/Footer";
 import Cursor from "./components/layout/Cursor";
 import CartDrawer from "./components/cart/CartDrawer";
 import { Flame } from "./components/ui/ui";
-import { API_ORIGIN } from "./lib/api.js";
+import { API_ORIGIN, apiGet } from "./lib/api.js";
 // The two fonts every page shows first (headings and body text), fetched straight away instead of
 // after the stylesheet: the headings appear sooner and nothing jumps when the font arrives.
 import antonFont from "@fontsource/anton/files/anton-latin-400-normal.woff2?url";
@@ -63,6 +63,10 @@ export function Layout({ children }) {
 
 export default function App() {
   const [queryClient] = useState(createQueryClient);
+  // Say hello to the backend as soon as anyone opens the site, so it's awake (and warm) by checkout.
+  useEffect(() => {
+    apiGet("/ping").catch(() => {});
+  }, []);
   const { pathname } = useLocation();
   // The staff dashboard is a work tool: no site navbar, footer, cart or custom cursor.
   const path = pathname.replace(/\/+$/, "") || "/";

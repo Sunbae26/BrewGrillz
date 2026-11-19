@@ -168,3 +168,17 @@
 .placecard--big .seal { top: 1.2rem; bottom: auto; }
 .placecard--big .placecard__name, .placecard--big .placecard__eyebrow { padding-right: 130px; }
 @media (max-width: 560px) { .placecard--big .placecard__name, .placecard--big .placecard__eyebrow { padding-right: 96px; } }
+
+/* ---------- loading shimmer + shared day/time pickers (checkout and booking) ---------- */
+.shimmer { position: relative; overflow: hidden; animation: none !important; background: var(--char-2) !important; border-color: var(--char-3) !important; }
+.shimmer::after { content: ''; position: absolute; inset: 0; transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgba(245, 239, 230, 0.09), transparent); animation: shimmer 1.3s ease-in-out infinite; }
+@keyframes shimmer { to { transform: translateX(100%); } }
+@media (prefers-reduced-motion: reduce) { .shimmer::after { animation: none; } }
+.pick__loading { display: flex; align-items: center; gap: 0.6rem; margin-bottom: var(--s-3); font-size: var(--fs-small); color: var(--text-dim); }
+.pick__spinner { flex: none; width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--char-4); border-top-color: var(--red); animation: spin 0.8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.pick__groups { display: grid; gap: var(--s-4); }
+.pick__period { font: 800 0.66rem/1 var(--f-body); letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-faint); margin-bottom: 0.55rem; }
+.pick__notes { margin-top: var(--s-5); }
+@media (max-width: 560px) { .slots { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
