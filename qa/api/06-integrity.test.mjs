@@ -6,7 +6,7 @@ import { randomUUID } from "node:crypto";
 import { IP, call, newCustomer, teamSession } from "./_helpers.mjs";
 
 const BACKEND = new URL("../../backend/", import.meta.url).pathname;
-const slot = async (n = 2) => (await call("GET", "/orders/pickup-slots")).body.data[0].slots[n].iso;
+const slot = async (n = 2) => (await call("GET", "/orders/pickup-slots")).body.data.at(-1).slots[n].iso;
 const sgDate = (days) => new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Singapore" }).format(new Date(Date.now() + days * 86_400_000));
 const phone = () => `9${String(Math.floor(Math.random() * 1e7)).padStart(7, "0")}`;
 

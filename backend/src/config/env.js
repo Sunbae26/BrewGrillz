@@ -66,7 +66,7 @@ const schema = z.object({
   // Table bookings (Singapore time)
   TOTAL_TABLES: z.coerce.number().int().min(1).max(200).default(20),
   BOOKING_FIRST: z.string().regex(/^\d{2}:\d{2}$/).default("11:30"),
-  BOOKING_LAST: z.string().regex(/^\d{2}:\d{2}$/).default("21:30"),
+  BOOKING_LAST: z.string().regex(/^\d{2}:\d{2}$/).default("22:00"), // last table booking time
   BOOKING_STEP_MINUTES: z.coerce.number().int().min(15).max(60).default(30),
   BOOKING_MINUTES: z.coerce.number().int().min(30).max(300).default(120),
   BOOKING_LEAD_MINUTES: z.coerce.number().int().min(0).default(60),

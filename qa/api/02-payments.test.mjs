@@ -98,7 +98,7 @@ async function placeOrder() {
     idempotencyKey: randomUUID(),
     items: [{ slug: "truffle-fries", quantity: 2 }],
     customer: { name: "Stripe Tester", email: "stripe@example.com", phone: "81234567" },
-    pickupAt: slots[0].slots[3].iso,
+    pickupAt: slots.at(-1).slots[3].iso,
     agree: true,
   });
   assert.equal(res.status, 201, JSON.stringify(res.body));

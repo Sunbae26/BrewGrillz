@@ -10,7 +10,7 @@ import { API, call, newCustomer, teamSession } from "./_helpers.mjs";
 let admin;
 const staff = async (method, path, body) => (admin ??= await teamSession("ADMIN")).call(method, `/admin${path}`, body);
 
-const slot = async (n = 2) => (await call("GET", "/orders/pickup-slots")).body.data[0].slots[n].iso;
+const slot = async (n = 2) => (await call("GET", "/orders/pickup-slots")).body.data.at(-1).slots[n].iso;
 const customer = { name: "Test Diner", email: "test@example.com", phone: "9123 4567", whatsapp: true };
 const order = async (items, extra = {}) =>
   call("POST", "/orders", { idempotencyKey: randomUUID(), items, customer, pickupAt: await slot(), agree: true, ...extra });

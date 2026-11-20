@@ -4,7 +4,7 @@ import assert from "node:assert/strict";
 import { randomUUID } from "node:crypto";
 import { call, newCustomer, signIn, teamSession } from "./_helpers.mjs";
 
-const slot = async () => (await call("GET", "/orders/pickup-slots")).body.data[0].slots[3].iso;
+const slot = async () => (await call("GET", "/orders/pickup-slots")).body.data.at(-1).slots[3].iso;
 const RIBEYE = { slug: "ribeye", quantity: 2, options: { Doneness: "Medium rare", Sauce: "Peppercorn sauce" } };
 
 async function payOrder(session, items, extra = {}) {

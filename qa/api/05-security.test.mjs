@@ -67,7 +67,7 @@ test("SEC-04 someone else's order and booking can't be read without the private 
     idempotencyKey: randomUUID(),
     items: [{ slug: "chicken-wings", quantity: 1 }],
     customer: { name: "Alice", email: alice.email, phone: "9123 4567" },
-    pickupAt: slots[0].slots[1].iso,
+    pickupAt: slots.at(-1).slots[1].iso,
     agree: true,
   });
   assert.equal(placed.status, 201, JSON.stringify(placed.body));
@@ -146,7 +146,7 @@ test("SEC-10 customers can't order with someone else's points or tamper with pri
     idempotencyKey: randomUUID(),
     items: [{ slug: "chicken-wings", quantity: 1, priceCents: 1, unitPriceCents: 1 }],
     customer: { name: "Guest", email: "guest@example.com", phone: "9123 4567" },
-    pickupAt: (await call("GET", "/orders/pickup-slots")).body.data[0].slots[1].iso,
+    pickupAt: (await call("GET", "/orders/pickup-slots")).body.data.at(-1).slots[1].iso,
     agree: true,
     pointsToRedeem: 100,
   });
@@ -155,7 +155,7 @@ test("SEC-10 customers can't order with someone else's points or tamper with pri
     idempotencyKey: randomUUID(),
     items: [{ slug: "chicken-wings", quantity: 1, priceCents: 1 }],
     customer: { name: "Guest", email: "guest@example.com", phone: "9123 4567" },
-    pickupAt: (await call("GET", "/orders/pickup-slots")).body.data[0].slots[1].iso,
+    pickupAt: (await call("GET", "/orders/pickup-slots")).body.data.at(-1).slots[1].iso,
     agree: true,
   });
   if (cheap.status === 201) assert.equal(cheap.body.data.order.totalCents, 1090, "server prices the dish");
