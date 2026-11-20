@@ -8,5 +8,5 @@ export const restaurant = {
   email: "info@brewgrillz.sg",
   mapsUrl:
     "https://www.google.com/maps/search/?api=1&query=BrewGrillz+163+Rochor+Road+Singapore+188438",
-  hours: { open: "10:00", close: "23:00" },
+  hours: { open: "11:30", close: "22:30" },
 };

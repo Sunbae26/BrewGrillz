@@ -86,7 +86,7 @@ export const terms = {
     {
       heading: "Table bookings",
       list: [
-        "Online bookings are for up to 10 guests. Larger groups, please send an event enquiry.",
+        "Online bookings are for up to 45 guests. Larger groups, please send an event enquiry.",
         "Your booking is a request until we confirm it by email.",
         "We hold your table for 15 minutes after your booking time. Running late? Call us.",
         "Tables are usually reserved for 2 hours.",

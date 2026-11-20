@@ -182,3 +182,9 @@
 .pick__period { font: 800 0.66rem/1 var(--f-body); letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-faint); margin-bottom: 0.55rem; }
 .pick__notes { margin-top: var(--s-5); }
 @media (max-width: 560px) { .slots { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+/* Booking: quick group-size picks under the guests stepper */
+.psize { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.7rem; }
+.psize__b { min-width: 2.6rem; padding: 0.45rem 0.7rem; border-radius: 999px; border: 1px solid var(--char-4); background: transparent; color: var(--text-dim); font: 700 0.8rem/1 var(--f-body); cursor: pointer; transition: background 0.2s, color 0.2s, border-color 0.2s; }
+.psize__b:hover { color: var(--cream); border-color: var(--cream); }
+.psize__b.is-on { background: var(--red); border-color: var(--red); color: #fff; }

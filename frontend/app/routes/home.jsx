@@ -20,7 +20,7 @@ export const links = () => [
 export const meta = () =>
   seo({
     title: "BrewGrillz Singapore — Steaks, Pizza, Pasta & Craft Beer in Bugis",
-    description: "BrewGrillz is a grill & craft bar on Rochor Road, Bugis. Flame-grilled steaks, BBQ ribs, sharing platters, Italian pizza and pasta, Brewerkz craft beer and cocktails. Open daily 10am–11pm.",
+    description: "BrewGrillz is a grill & craft bar on Rochor Road, Bugis. Flame-grilled steaks, BBQ ribs, sharing platters, Italian pizza and pasta, Brewerkz craft beer and cocktails. Open daily 11:30am–10:30pm.",
     path: "/",
     schema: restaurantSchema,
   });

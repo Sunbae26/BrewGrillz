@@ -32,7 +32,7 @@ const GALLERY = [
 ];
 
 const FAQ = [
-  { q: "Do I need to book?", a: <>Walk-ins are welcome, but evenings and weekends get busy. <MoCoLink to="/reserve">Book a table</MoCoLink> online for up to 10 guests; we hold it for 15 minutes after your booking time.</> },
+  { q: "Do I need to book?", a: <>Walk-ins are welcome, but evenings and weekends get busy. <MoCoLink to="/reserve">Book a table</MoCoLink> online for up to 45 guests; we hold it for 15 minutes after your booking time.</> },
   { q: "Can I order food to take away?", a: <>Yes. <MoCoLink to="/menu">Order online</MoCoLink>, pay, and pick it up at 163 Rochor Road. For delivery, find us on GrabFood and foodpanda.</> },
   { q: "Can I order drinks online?", a: "Soft drinks, mocktails and coffee, yes. Beer, wine, cocktails and spirits are served at the restaurant only." },
   { q: "Are prices inclusive of GST?", a: "Yes, menu prices include GST. A 10% service charge applies to dine-in only, not to pickup orders." },

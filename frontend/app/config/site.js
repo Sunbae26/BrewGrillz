@@ -13,8 +13,7 @@ export const site = {
   whatsappHref: 'https://wa.me/6587702077',
   email: 'info@brewgrillz.sg',
   hours: [
-    { label: 'Open daily', value: '10:00am – 11:00pm' },
-    { label: 'Kitchen', value: '11:30am – 10:30pm' },
+    { label: 'Open daily', value: '11:30am – 10:30pm' },
   ],
   socials: {
     instagram: 'https://www.instagram.com/brewgrillz',

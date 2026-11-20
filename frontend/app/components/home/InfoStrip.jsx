@@ -9,8 +9,8 @@ export default function InfoStrip() {
       <div className="container info__grid">
         <div className="info__item">
           <span className="info__k"><i className="pulse" /> Open today</span>
-          <span className="info__v">10am – 11pm</span>
-          <span className="info__s">Kitchen 11:30am – 10:30pm</span>
+          <span className="info__v">11:30am – 10:30pm</span>
+          <span className="info__s">Every day</span>
         </div>
         <a className="info__item" href={site.mapsUrl} target="_blank" rel="noreferrer">
           <span className="info__k">Find us</span>

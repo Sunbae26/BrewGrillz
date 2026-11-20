@@ -56,7 +56,7 @@ test("VAL-05 table bookings: party size, how far ahead and terms are checked", a
   const times = (await call("GET", `/reservations/availability?date=${sgDate(25)}`)).body.data.times;
   const base = { idempotencyKey: randomUUID(), startsAt: times.find((t) => t.available).iso, name: "Valid Name", email: "v@example.com", phone: "91234567", agree: true };
   assert.equal((await call("POST", "/reservations", { ...base, partySize: 0 })).status, 400);
-  assert.equal((await call("POST", "/reservations", { ...base, idempotencyKey: randomUUID(), partySize: 30 })).status, 400);
+  assert.equal((await call("POST", "/reservations", { ...base, idempotencyKey: randomUUID(), partySize: 46 })).status, 400);
   assert.equal((await call("POST", "/reservations", { ...base, idempotencyKey: randomUUID(), partySize: 2, agree: false })).status, 400);
   const far = await call("GET", `/reservations/availability?date=${sgDate(120)}`);
   assert.ok(far.status === 400 || (far.body.data?.times ?? []).length === 0, "no bookings 4 months ahead");

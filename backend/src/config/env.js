@@ -72,7 +72,7 @@ const schema = z.object({
   BOOKING_LEAD_MINUTES: z.coerce.number().int().min(0).default(60),
   RESERVATION_DAYS_AHEAD: z.coerce.number().int().min(1).max(180).default(60),
   RESERVATION_MAX_ACTIVE: z.coerce.number().int().min(1).max(20).default(3),
-  MAX_PARTY_SIZE: z.coerce.number().int().min(2).max(40).default(10),
+  MAX_PARTY_SIZE: z.coerce.number().int().min(2).max(100).default(45),
 
   PAYMENT_PROVIDER: z.enum(["test", "stripe"]).default("test"),
   STRIPE_SECRET_KEY: optional,

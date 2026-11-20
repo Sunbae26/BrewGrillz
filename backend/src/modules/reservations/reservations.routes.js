@@ -15,7 +15,7 @@ const tokenQuery = z.object({ t: z.string().min(10).max(64) });
 const bookingBody = z.object({
   idempotencyKey: z.string().uuid(),
   startsAt: z.string().datetime(),
-  partySize: z.number().int().min(1).max(40),
+  partySize: z.number().int().min(1).max(100), // the real limit is MAX_PARTY_SIZE (45)
   name: personName,
   email,
   phone: sgPhone,

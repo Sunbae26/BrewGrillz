@@ -79,7 +79,7 @@ test("never overbooks: a time is full once every table is held", async () => {
 test("limits: party size, times outside hours, one booking per day per guest", async () => {
   const day = sgDate(30);
   const [slot, next] = await freeTime(day);
-  const big = await call("POST", "/reservations", guest({ startsAt: slot.iso, partySize: 14 }));
+  const big = await call("POST", "/reservations", guest({ startsAt: slot.iso, partySize: 46 }));
   assert.equal(big.body.details.code, "PARTY_TOO_BIG");
   const odd = await call("POST", "/reservations", guest({ startsAt: `${day}T20:10:00.000Z` }));
   assert.equal(odd.status, 409);

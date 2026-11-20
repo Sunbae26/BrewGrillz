@@ -17,7 +17,7 @@ import { seo } from "../lib/seo.js";
 export const meta = () =>
   seo({
     title: "Book a Table | BrewGrillz Singapore — Grill & Bar in Bugis",
-    description: "Book a table at BrewGrillz, 163 Rochor Road, Bugis. Steaks, platters, pizza and Brewerkz craft beer. Groups up to 10 online; bigger parties, send us an event enquiry.",
+    description: "Book a table at BrewGrillz, 163 Rochor Road, Bugis. Steaks, platters, pizza and Brewerkz craft beer. Groups up to 45 online; bigger parties, send us an event enquiry.",
     path: "/reserve",
   });
 
@@ -43,7 +43,7 @@ export default function Reserve() {
   const navigate = useNavigate();
   const { data: rules } = useQuery({ queryKey: ["booking-rules"], queryFn: () => apiGet("/reservations/rules"), staleTime: Infinity });
   const { data: days = [], isPending: loadingDays } = useQuery({ queryKey: ["booking-days"], queryFn: () => apiGet("/reservations/days"), staleTime: 300_000 });
-  const maxParty = rules?.maxParty ?? 10;
+  const maxParty = rules?.maxParty ?? 45;
 
   const [date, setDate] = useState("");
   const [party, setParty] = useState(2);
@@ -145,7 +145,7 @@ export default function Reserve() {
       <PageHero eyebrow="Book a table" title="Grab a" accent="seat." script="pull up, partner" image={img("sirloin")}>
         <p className="lead">Steaks on the grill, Brewerkz on tap and a table with your name on it. Tell us when, and we’ll hold it straight away.</p>
         <ul className="phero__pills">
-          <li>Open daily 10am – 11pm</li>
+          <li>Open daily 11:30am – 10:30pm</li>
           <li>Up to {maxParty} guests online</li>
           <li>Confirmed in about 15 min</li>
         </ul>
@@ -165,6 +165,12 @@ export default function Reserve() {
                 <div>
                   <div className="book__label">Guests</div>
                   <QtyStepper value={party} min={1} max={maxParty} onChange={(n) => setParty(Math.max(1, Math.min(maxParty, n)))} label="Number of guests" />
+                  {/* quick picks for big groups, so nobody taps + forty times */}
+                  <div className="psize" role="group" aria-label="Quick group sizes">
+                    {[2, 4, 6, 10, 20, 30, maxParty].filter((n, i, a) => n <= maxParty && a.indexOf(n) === i).map((n) => (
+                      <button key={n} type="button" className={`psize__b ${party === n ? "is-on" : ""}`} onClick={() => setParty(n)} aria-pressed={party === n}>{n}</button>
+                    ))}
+                  </div>
                 </div>
                 <p className="book__big">More than {maxParty}? <MoCoLink to="/events">Plan a party with us →</MoCoLink></p>
               </div>
