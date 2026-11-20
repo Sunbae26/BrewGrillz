@@ -4,7 +4,7 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "rewrites": [
-    { "source": "/api/:path*", "destination": "https://brewgrillz.onrender.com/api/:path*" },
+    { "source": "/api/:path*", "destination": "https://api.brewgrillz.sg/api/:path*" },
     { "source": "/order/:path*", "destination": "/__spa-fallback" },
     { "source": "/reserve/:code", "destination": "/__spa-fallback" },
     { "source": "/admin", "destination": "/__spa-fallback" },
