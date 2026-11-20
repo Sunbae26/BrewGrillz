@@ -35,6 +35,8 @@
 /* Phones and tablets: no photo cards (the background photo shows the food), a smaller headline,
    and the whole hero fits on the first screen with both buttons visible. */
 @media (max-width: 900px) {
+  /* no empty space above the text: the hero is as tall as its content, starting under the navbar */
+  .hero { min-height: auto; justify-content: flex-start; padding-top: calc(var(--nav-h) + clamp(1.75rem, 6vw, 3rem)); }
   .hero__grid { grid-template-columns: 1fr; padding-bottom: clamp(2.5rem, 8vw, 4rem); gap: 0; }
   .hero__cards { display: none; }
   .hero__title { font-size: clamp(2.6rem, 9vw, 4.4rem); margin-left: 0; }
