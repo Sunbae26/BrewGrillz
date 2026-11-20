@@ -34,7 +34,7 @@
   --f-script: 'Permanent Marker', 'Comic Sans MS', cursive;
   --f-body: 'Manrope Variable', 'Manrope', system-ui, sans-serif;
 
-  --fs-mega: clamp(4.2rem, 15.5vw, 15rem);
+  --fs-mega: clamp(3rem, 8vw, 8rem);
   --fs-h1: clamp(3rem, 8vw, 7.5rem);
   --fs-h2: clamp(2.4rem, 6vw, 5.4rem);
   --fs-h3: clamp(1.6rem, 3vw, 2.6rem);
