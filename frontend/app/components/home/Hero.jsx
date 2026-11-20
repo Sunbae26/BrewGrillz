@@ -16,8 +16,9 @@ export default function Hero() {
         .from('.hero__card', { y: 140, rotate: (i) => (i ? 18 : -14), opacity: 0, stagger: 0.12, duration: 1.1 }, 0)
         .from('.hero__badge', { scale: 0, rotate: -120, duration: 1, ease: 'punch' }, 0.4)
 
-      // Scroll: camera pulls back — headline drifts up, cards fan out, fire dims
-      gsap.timeline({ scrollTrigger: { trigger: root.current, start: 'top top', end: 'bottom top', scrub: true } })
+      // Scroll: camera pulls back — headline drifts up, cards fan out, fire dims.
+      // Desktop only: on phones a scroll-linked move lags behind the finger and looks like the page jumps.
+      if (!isTouch()) gsap.timeline({ scrollTrigger: { trigger: root.current, start: 'top top', end: 'bottom top', scrub: true } })
         .to('.hero__type', { yPercent: -18, ease: 'none' }, 0)
         .to('.hero__cards', { yPercent: -28, ease: 'none' }, 0)
         .to('.hero__fx', { opacity: 0.4, ease: 'none' }, 0)

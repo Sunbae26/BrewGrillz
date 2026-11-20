@@ -99,7 +99,7 @@ test("E2E-MOB-05 every page keeps its text inside the screen with side margins",
       const out = [];
       for (const el of document.querySelectorAll("h1, h2, h3, p, label, .btn")) {
         // sideways carousels and decorative words scroll or bleed on purpose
-        if (el.closest(".mnav, .marquee, .vibes__track, .footer, .hero__cards, .me__words, .mchip, .ribbon, .drawer, .modal, .print-only")) continue;
+        if (el.closest(".mnav, .marquee, .vibes__track, .platters__posters, .footer, .hero__cards, .me__words, .mchip, .ribbon, .drawer, .modal, .print-only")) continue;
         const r = el.getBoundingClientRect();
         if (!r.width || !r.height || getComputedStyle(el).visibility === "hidden") continue;
         if (r.left < 16 || r.right > width - 16) out.push(`${el.tagName.toLowerCase()}.${String(el.className).split(" ")[0]} (${Math.round(r.left)} / ${Math.round(width - r.right)}px)`);
