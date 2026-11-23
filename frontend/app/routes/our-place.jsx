@@ -20,7 +20,7 @@ export const meta = () =>
 const PILLARS = [
   { k: "01", title: "The fire", text: "Steaks, ribs, skewers and platters cooked to order over a hot grill. Simple food, done properly.", image: img("sirloin"), sticker: "Flame-grilled" },
   { k: "02", title: "The pour", text: "Three house beers brewed by Brewerkz for BrewGrillz, plus cocktails, wine and spirits.", image: place("taps"), sticker: "On tap" },
-  { k: "03", title: "The crew", text: "Locals after work, friends from out of town, birthdays at the long table. Everyone’s welcome.", image: place("booth"), sticker: "Luv it" },
+  { k: "03", title: "The vibe", text: "Brick walls, red booths and a vinyl corner. Come for dinner, stay for one more round.", image: place("vinyl"), sticker: "Chill it" },
 ];
 
 const GALLERY = [
