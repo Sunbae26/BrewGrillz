@@ -8,7 +8,7 @@ import PageHero from "../components/ui/PageHero";
 import QtyStepper from "../components/ui/QtyStepper";
 import { Button, Arrow, Flame } from "../components/ui/ui";
 import MoCoLink from "../motion/MoCoLink";
-import { img } from "../config/home";
+import { place } from "../config/home";
 import { site } from "../config/site";
 import { seo } from "../lib/seo.js";
 
@@ -142,7 +142,7 @@ export default function Reserve() {
 
   return (
     <div className="reserve-page">
-      <PageHero eyebrow="Book a table" title="Grab a" accent="seat." script="pull up, partner" image={img("sirloin")}>
+      <PageHero eyebrow="Book a table" title="Grab a" accent="seat." script="pull up, partner" image={place("set-table")}>
         <p className="lead">Steaks on the grill, Brewerkz on tap and a table with your name on it. Tell us when, and we’ll hold it straight away.</p>
         <ul className="phero__pills">
           <li>Open daily 11:30am – 10:30pm</li>

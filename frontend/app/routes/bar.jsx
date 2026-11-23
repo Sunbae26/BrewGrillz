@@ -6,7 +6,7 @@ import PageHero from "../components/ui/PageHero";
 import { Pint } from "../components/home/BarTeaser";
 import Marquee from "../components/layout/Marquee";
 import { Button, Arrow, SectionHead } from "../components/ui/ui";
-import { taps, cocktails } from "../config/home";
+import { taps, cocktails, place } from "../config/home";
 import MoCoLink from "../motion/MoCoLink";
 import { seo } from "../lib/seo.js";
 
@@ -44,7 +44,7 @@ export default function Bar({ loaderData }) {
 
   return (
     <div className="bar-page">
-      <PageHero eyebrow="After dark at BrewGrillz" title="The" accent="Bar" tone="lime" script="cold pints, warm nights">
+      <PageHero eyebrow="After dark at BrewGrillz" title="The" accent="Bar" tone="lime" script="cold pints, warm nights" image={place("bar")}>
         <p className="lead">Three house beers brewed by <b>Brewerkz</b> just for us, buckets of five, proper cocktails and a wine list worth sitting down for.</p>
         <div className="phero__ctas">
           <Button to="/reserve" variant="primary" icon={<Arrow />}>Book a table</Button>

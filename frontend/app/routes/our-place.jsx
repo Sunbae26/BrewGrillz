@@ -4,7 +4,7 @@ import PageHero from "../components/ui/PageHero";
 import { Button, Arrow, Food, Sticker, SectionHead } from "../components/ui/ui";
 import { Visit } from "../components/home/Extras";
 import MoCoLink from "../motion/MoCoLink";
-import { img } from "../config/home";
+import { img, place } from "../config/home";
 import { site } from "../config/site";
 import { seo } from "../lib/seo.js";
 
@@ -19,8 +19,8 @@ export const meta = () =>
 
 const PILLARS = [
   { k: "01", title: "The fire", text: "Steaks, ribs, skewers and platters cooked to order over a hot grill. Simple food, done properly.", image: img("sirloin"), sticker: "Flame-grilled" },
-  { k: "02", title: "The pour", text: "Three house beers brewed by Brewerkz for BrewGrillz, plus cocktails, wine and spirits.", image: img("chicken-wings"), sticker: "On tap" },
-  { k: "03", title: "The crew", text: "Locals after work, friends from out of town, birthdays at the long table. Everyone’s welcome.", image: img("meat-platter"), sticker: "Luv it" },
+  { k: "02", title: "The pour", text: "Three house beers brewed by Brewerkz for BrewGrillz, plus cocktails, wine and spirits.", image: place("taps"), sticker: "On tap" },
+  { k: "03", title: "The crew", text: "Locals after work, friends from out of town, birthdays at the long table. Everyone’s welcome.", image: place("booth"), sticker: "Luv it" },
 ];
 
 const GALLERY = [
@@ -62,7 +62,7 @@ export default function OurPlace() {
   useReveals(root);
   return (
     <div className="place-page">
-      <PageHero eyebrow="Our place" title="Chill it. Grill it." accent="Luv it." script="163 Rochor Road, Bugis" image={img("tenderloin")}>
+      <PageHero eyebrow="Our place" title="Chill it. Grill it." accent="Luv it." script="163 Rochor Road, Bugis" image={place("dining")}>
         <p className="lead">A grill and craft bar in the middle of Bugis. Stylish, cosy and a little bit rustic, with a grill that’s always fired up and a bar that’s always pouring.</p>
         <div className="phero__ctas">
           <Button to="/reserve" variant="primary" icon={<Arrow />}>Book a table</Button>

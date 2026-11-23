@@ -5,7 +5,7 @@
 /* ---------- page hero ---------- */
 .phero { position: relative; overflow: hidden; padding: calc(var(--nav-h) + clamp(3rem, 8vw, 6.5rem)) 0 clamp(3rem, 7vw, 5.5rem); border-bottom: 1px solid var(--line); }
 .phero__media { position: absolute; inset: 0; }
-.phero__media img { width: 100%; height: 100%; object-fit: cover; opacity: 0.32; filter: saturate(1.1) contrast(1.05); }
+.phero__media img { width: 100%; height: 100%; object-fit: cover; opacity: 0.6; filter: saturate(1.08) contrast(1.04); }
 .phero--image .phero__fx { background: linear-gradient(90deg, rgba(20, 17, 16, 0.96) 0%, rgba(20, 17, 16, 0.78) 45%, rgba(20, 17, 16, 0.35) 100%), linear-gradient(0deg, var(--char) 0%, transparent 40%); }
 .phero__fx { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse 60% 70% at 85% 10%, rgba(218, 56, 51, 0.22), transparent 70%); }
 .phero--lime .phero__fx { background: radial-gradient(ellipse 60% 70% at 80% 0%, rgba(198, 255, 61, 0.14), transparent 70%), radial-gradient(ellipse 50% 60% at 10% 100%, rgba(218, 56, 51, 0.16), transparent 70%); }
@@ -188,3 +188,8 @@
 .psize__b { min-width: 2.6rem; padding: 0.45rem 0.7rem; border-radius: 999px; border: 1px solid var(--char-4); background: transparent; color: var(--text-dim); font: 700 0.8rem/1 var(--f-body); cursor: pointer; transition: background 0.2s, color 0.2s, border-color 0.2s; }
 .psize__b:hover { color: var(--cream); border-color: var(--cream); }
 .psize__b.is-on { background: var(--red); border-color: var(--red); color: #fff; }
+
+/* Lime (Bar) hero with a photo: keep the dark wash so the text stays readable */
+.phero--lime.phero--image .phero__fx { background: linear-gradient(90deg, rgba(20, 17, 16, 0.96) 0%, rgba(20, 17, 16, 0.8) 45%, rgba(20, 17, 16, 0.3) 100%), linear-gradient(0deg, var(--char) 0%, transparent 40%), radial-gradient(ellipse 60% 70% at 80% 0%, rgba(198, 255, 61, 0.1), transparent 70%); }
+/* Phones: the text covers the whole width, so darken the photo evenly */
+@media (max-width: 760px) { .phero--image .phero__fx, .phero--lime.phero--image .phero__fx { background: linear-gradient(0deg, var(--char) 0%, rgba(20, 17, 16, 0.78) 45%, rgba(20, 17, 16, 0.62) 100%); } }

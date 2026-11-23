@@ -1,5 +1,7 @@
 // Home-page content. Prices + dishes from "BGZ Dining Menu – Revamped Jan 2026".
 export const img = (name) => ({ src: `/images/food/${name}.webp`, sm: `/images/food/${name}-sm.webp`, xs: `/images/food/${name}-xs.webp` })
+// Real photos of the restaurant (edited for warm, even light)
+export const place = (name) => ({ src: `/images/place/${name}.webp`, sm: `/images/place/${name}-sm.webp`, xs: `/images/place/${name}-xs.webp` })
 
 export const mainEvent = [
   {
@@ -95,9 +97,9 @@ export const vibes = [
   { type: 'text', big: 'Celebrations', small: 'Birthdays, promotions, “just because”.' },
   { type: 'img', image: img('honey-garlic-pizza'), caption: 'Honey garlic chicken pizza' },
   { type: 'text', big: 'Chill-outs', small: 'Pints, music and a table that’s always buzzing.', tone: 'red' },
-  { type: 'img', image: img('chicken-wings'), caption: 'Signature wings + fiery house chilli' },
+  { type: 'img', image: place('shopfront'), caption: '163 Rochor Road, Bugis' },
   { type: 'text', big: 'Hangouts', small: 'Bugis after work. Bugis after dark.', tone: 'lime' },
-  { type: 'img', image: img('carbonara'), caption: 'Classic carbonara' },
+  { type: 'img', image: place('vinyl'), caption: 'The vinyl corner' },
 ]
 
 // "The grill picks for you" slot machine — normal à-la-carte menu prices (Jan 2026 menu). Not a combo/deal.

@@ -6,7 +6,7 @@ import PageHero from "../components/ui/PageHero";
 import QtyStepper from "../components/ui/QtyStepper";
 import { Button, Arrow, Flame, Food, Sticker, SectionHead } from "../components/ui/ui";
 import MoCoLink from "../motion/MoCoLink";
-import { img } from "../config/home";
+import { img, place } from "../config/home";
 import { site } from "../config/site";
 import { seo } from "../lib/seo.js";
 
@@ -111,7 +111,7 @@ export default function Events() {
 
   return (
     <div className="events-page">
-      <PageHero eyebrow="Events & parties" title="Make it a" accent="night." script="the whole crew’s invited" image={img("mixed-grill-platter")}>
+      <PageHero eyebrow="Events & parties" title="Make it a" accent="night." script="the whole crew’s invited" image={place("long-table")}>
         <p className="lead">Birthdays, office parties, farewells and watch parties. Long tables, sharing platters, Brewerkz on tap and a team that loves a celebration.</p>
         <div className="phero__ctas">
           <Button variant="primary" icon={<Arrow />} onClick={() => document.getElementById("enquire")?.scrollIntoView({ behavior: "smooth" })}>Plan my event</Button>
