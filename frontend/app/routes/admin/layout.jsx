@@ -22,8 +22,19 @@ export default function AdminLayout() {
     queryKey: ADMIN_KEYS.summary,
     queryFn: ({ signal }) => apiGet("/admin/summary", { signal }),
     enabled: isStaff(user),
-    refetchInterval: 20_000,
+    refetchInterval: 10_000,
+    refetchIntervalInBackground: true,
+    refetchOnWindowFocus: "always",
+    staleTime: 0,
   });
+
+  // "(2) New orders · BrewGrillz" in the browser tab, so staff see it from any tab
+  useEffect(() => {
+    const n = summary?.newOrders ?? 0;
+    const base = "Dashboard | BrewGrillz";
+    document.title = n > 0 ? `(${n}) New order${n > 1 ? "s" : ""} · BrewGrillz` : base;
+    return () => { document.title = base; };
+  }, [summary?.newOrders]);
 
   if (loading || !user) return <section className="adm" aria-busy="true" />;
 

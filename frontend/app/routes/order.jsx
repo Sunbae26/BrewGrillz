@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useCart, lineExtras } from "../lib/cart.jsx";
@@ -21,7 +21,7 @@ export default function OrderStatus() {
   const justPaid = params.has("paid");
   const { clear, ready } = useCart();
 
-  const { data: order, error, isLoading } = useQuery({
+  const { data: order, error, isLoading, dataUpdatedAt } = useQuery({
     queryKey: ["order", code, token],
     queryFn: async ({ signal }) => {
       const current = await fetchOrder(code, token, signal);
@@ -34,13 +34,17 @@ export default function OrderStatus() {
     },
     enabled: Boolean(token),
     retry: (count, err) => err?.status !== 404 && count < 3,
-    // quickly while the payment is confirming, then every 20 seconds until it's collected
+    // live status: every 3s while the payment confirms, then every 10s until it's collected.
+    // Keeps going when the tab is in the background, and refreshes the moment the customer comes back.
+    staleTime: 0,
     refetchInterval: (query) => {
       const status = query.state.data?.status;
-      if (!status || FINAL.includes(status)) return false;
-      return status === "PENDING_PAYMENT" ? 3000 : 20_000;
+      if (status && FINAL.includes(status)) return false;
+      return status === "PENDING_PAYMENT" ? 3000 : 10_000;
     },
-    refetchOnWindowFocus: true,
+    refetchIntervalInBackground: true,
+    refetchOnWindowFocus: "always",
+    refetchOnReconnect: "always",
   });
 
   useEffect(() => {
@@ -67,14 +71,23 @@ export default function OrderStatus() {
             <Button to="/track" variant="ghost">Find my order</Button>
           </div>
         ) : (
-          <OrderCard order={order} />
+          <OrderCard order={order} updatedAt={dataUpdatedAt} />
         )}
       </div>
     </section>
   );
 }
 
-function OrderCard({ order }) {
+function useNow(ms) {
+  const [now, setNow] = useState(() => Date.now());
+  useEffect(() => { const t = setInterval(() => setNow(Date.now()), ms); return () => clearInterval(t); }, [ms]);
+  return now;
+}
+
+function OrderCard({ order, updatedAt }) {
+  const now = useNow(5000);
+  const ago = Math.max(0, Math.round((now - updatedAt) / 1000));
+  const live = !FINAL.includes(order.status);
   const reached = {};
   for (const e of order.events) reached[e.status] ??= e.at;
   const idx = STEPS.findIndex((s) => s.key === order.status);
@@ -92,6 +105,9 @@ function OrderCard({ order }) {
             : <>Thanks, <span className="text-red">{order.customerName}!</span></>}
         </h1>
         <p className="track__pickup">Pickup <b>{formatPickup(order.pickupAt)}</b> · 163 Rochor Road, Bugis</p>
+        {live && updatedAt > 0 && (
+          <p className="track__live" aria-live="off"><i aria-hidden="true" /> Live · updated {ago < 10 ? "just now" : `${ago}s ago`}</p>
+        )}
         {order.paid && !off && <p className="track__note">We’ve emailed your receipt. Show your order number <b>{order.code}</b> at the counter when you collect.</p>}
       </header>
 

@@ -23,6 +23,9 @@ export default function AdminOrders() {
     queryKey: ADMIN_KEYS.orders,
     queryFn: ({ signal }) => apiGet("/admin/orders", { signal }),
     refetchInterval: 10_000,
+    refetchIntervalInBackground: true, // keep checking (and chiming) when staff are on another tab
+    refetchOnWindowFocus: "always",
+    staleTime: 0,
   });
   const action = useAdminAction([ADMIN_KEYS.orders]);
 

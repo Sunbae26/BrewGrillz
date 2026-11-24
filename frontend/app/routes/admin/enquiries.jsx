@@ -15,6 +15,10 @@ export default function AdminEnquiries() {
   const list = useQuery({
     queryKey: [...ADMIN_KEYS.enquiries, filter],
     queryFn: ({ signal }) => apiGet(`/admin/enquiries${filter ? `?status=${filter}` : ""}`, { signal }),
+    refetchInterval: 30_000,
+    refetchIntervalInBackground: true,
+    refetchOnWindowFocus: "always",
+    staleTime: 0,
   });
   const action = useAdminAction([ADMIN_KEYS.enquiries]);
   const update = (code, body) => action.mutate({ method: "PATCH", path: `/admin/enquiries/${code}`, body });

@@ -193,3 +193,9 @@
 .phero--lime.phero--image .phero__fx { background: linear-gradient(90deg, rgba(20, 17, 16, 0.96) 0%, rgba(20, 17, 16, 0.8) 45%, rgba(20, 17, 16, 0.3) 100%), linear-gradient(0deg, var(--char) 0%, transparent 40%), radial-gradient(ellipse 60% 70% at 80% 0%, rgba(198, 255, 61, 0.1), transparent 70%); }
 /* Phones: the text covers the whole width, so darken the photo evenly */
 @media (max-width: 760px) { .phero--image .phero__fx, .phero--lime.phero--image .phero__fx { background: linear-gradient(0deg, var(--char) 0%, rgba(20, 17, 16, 0.78) 45%, rgba(20, 17, 16, 0.62) 100%); } }
+
+/* Order page: small "Live · updated just now" line */
+.track__live { display: inline-flex; align-items: center; gap: 0.45rem; margin-top: 0.6rem; font-size: 0.78rem; color: var(--text-faint); letter-spacing: 0.02em; }
+.track__live i { width: 7px; height: 7px; border-radius: 50%; background: #4ade80; box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.18); }
+@media (prefers-reduced-motion: no-preference) { .track__live i { animation: livePulse 2s ease-in-out infinite; } }
+@keyframes livePulse { 50% { opacity: 0.35; } }

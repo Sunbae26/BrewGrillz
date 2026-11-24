@@ -35,7 +35,18 @@ export default function Account() {
   }, [loading, user, navigate]);
 
   const signedIn = Boolean(user);
-  const orders = useQuery({ queryKey: ["account", "orders"], queryFn: ({ signal }) => apiGet("/account/orders", { signal }), enabled: signedIn });
+  const orders = useQuery({
+    queryKey: ["account", "orders"],
+    queryFn: ({ signal }) => apiGet("/account/orders", { signal }),
+    enabled: signedIn,
+    staleTime: 0,
+    refetchOnWindowFocus: "always",
+    // while an order is still on its way, keep the status live (every 10s)
+    refetchInterval: (q) => {
+      const list = Array.isArray(q.state.data) ? q.state.data : q.state.data?.data ?? [];
+      return list.some((o) => !["COMPLETED", "CANCELLED", "REFUNDED", "PENDING_PAYMENT"].includes(o.status)) ? 10_000 : false;
+    },
+  });
   const bookings = useQuery({ queryKey: ["account", "bookings"], queryFn: ({ signal }) => apiGet("/account/bookings", { signal }), enabled: signedIn });
   const points = useQuery({ queryKey: ["account", "points"], queryFn: ({ signal }) => apiGet("/account/points", { signal }), enabled: signedIn });
 

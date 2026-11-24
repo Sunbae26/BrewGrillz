@@ -20,7 +20,10 @@ export default function AdminBookings() {
   const list = useQuery({
     queryKey: ADMIN_KEYS.bookings(date),
     queryFn: ({ signal }) => apiGet(`/admin/reservations?date=${date}`, { signal }),
-    refetchInterval: 30_000,
+    refetchInterval: 10_000,
+    refetchIntervalInBackground: true,
+    refetchOnWindowFocus: "always",
+    staleTime: 0,
   });
   const action = useAdminAction([["admin", "bookings"]]);
   const run = (code, act, body = {}) => action.mutate({ path: `/admin/reservations/${code}/${act}`, body });
